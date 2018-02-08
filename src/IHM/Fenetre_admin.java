@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 import org.postgresql.util.PSQLException;
 
@@ -28,6 +29,8 @@ public class Fenetre_admin extends JFrame
 		Controleur C = new Controleur();
 		panneau=new Panneau_admin_global(this, C); 
 		add(panneau);
+		JScrollPane scrollPane = new JScrollPane(panneau);
+		add(scrollPane);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }
