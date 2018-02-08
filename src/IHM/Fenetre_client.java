@@ -4,13 +4,12 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-
-import controleur.Controleur;
+import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 public class Fenetre_client extends JFrame
 {
-	private Panneau_critere p;
+	private Panneau_critere panneau;
 	Fenetre_client ()
 	{
 		super();
@@ -21,9 +20,10 @@ public class Fenetre_client extends JFrame
 		int hauteur=dim.height;
 		this.setSize( largeur/2, hauteur/2);
 		this.setLocationRelativeTo(null);
-		Controleur C = new Controleur();
-		p=new Panneau_critere(this, C);
-		add(p);
+		panneau=new Panneau_critere(this);
+		add(panneau);
+		JScrollPane scrollPane = new JScrollPane(panneau);
+		add(scrollPane);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

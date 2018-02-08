@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 import controleur.Controleur;
 import modele.Ordinateur;
@@ -25,6 +26,8 @@ public class Fenetre_resultat_admin extends JFrame {
 		this.setLocationRelativeTo(null);
 		panneau=new Panneau_resultat_admin(this, ordiListe, C); 
 		add(panneau);
+		JScrollPane scrollPane = new JScrollPane(panneau);
+		add(scrollPane);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
