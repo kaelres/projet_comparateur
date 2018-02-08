@@ -93,7 +93,7 @@ public class Panneau_resultat_admin extends JPanel {
 		p_boutonBas.add(b_modifier);
 		p_boutonBas.add(b_supprimer);
 		
-		b_precedant = new JButton("Precedant");
+		b_precedant = new JButton("Précédent");
 		b_precedant.addActionListener(new BoutonListenerPrecedant());
 		b_suivant = new JButton("Suivant");
 		b_suivant.addActionListener(new BoutonListenerSuivant());

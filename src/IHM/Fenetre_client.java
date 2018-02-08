@@ -10,7 +10,7 @@ import controleur.Controleur;
 @SuppressWarnings("serial")
 public class Fenetre_client extends JFrame
 {
-	private Panneau_critere panneau;
+	private Panneau_client panneau;
 	Fenetre_client ()
 	{
 		super();
@@ -22,7 +22,7 @@ public class Fenetre_client extends JFrame
 		this.setSize( largeur/2, hauteur/2);
 		this.setLocationRelativeTo(null);
 		Controleur C = new Controleur();
-		panneau=new Panneau_critere(this, C);
+		panneau=new Panneau_client(this, C);
 		add(panneau);
 		JScrollPane scrollPane = new JScrollPane(panneau);
 		add(scrollPane);

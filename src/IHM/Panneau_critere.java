@@ -61,7 +61,8 @@ public class Panneau_critere extends JPanel
 	{
 		f_cri=f;
 		cont =c;
-		setLayout(new BorderLayout());
+		JPanel conteneur=new JPanel();
+		conteneur.setLayout(new BorderLayout());
 		
 		Panel p0=new Panel();
 		p0.setLayout(new BoxLayout(p0,BoxLayout.LINE_AXIS));
@@ -161,7 +162,7 @@ public class Panneau_critere extends JPanel
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p8);
 		p_formu.add(Box.createRigidArea(new Dimension(0,50)));
-		add(p_formu,BorderLayout.WEST);
+		conteneur.add(p_formu,BorderLayout.CENTER);
 		
 		
 		Panel p_boutons=new Panel();	
@@ -171,7 +172,9 @@ public class Panneau_critere extends JPanel
 		b_ajouter.addActionListener(new BoutonVListener());
 		p_boutons.add(b_annuler);
 		p_boutons.add(b_ajouter);
-		add(p_boutons,BorderLayout.SOUTH);
+		conteneur.add(p_boutons,BorderLayout.SOUTH);
+		
+		add(conteneur);
 	}
 	
 

@@ -80,8 +80,8 @@ public class Panneau_authentification extends JPanel
 		bouton_valider.addActionListener(new BoutonListenerValider());
 		bouton_quitter=new JButton("Quitter");
 		bouton_quitter.addActionListener(new BoutonListenerQuitter());
-		p_boutons.add(bouton_valider);
 		p_boutons.add(bouton_quitter);
+		p_boutons.add(bouton_valider);
 		add(p_boutons,BorderLayout.SOUTH);
 	}
 	
