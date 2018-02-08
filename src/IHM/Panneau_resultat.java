@@ -14,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 import modele.Ordinateur;
 
 @SuppressWarnings("serial")
@@ -27,28 +25,28 @@ public class Panneau_resultat extends JPanel {
 	private JButton b_suivant;
 	
 	private JLabel label_type;
-	private JTextField field_type;
+	private JLabel field_type;
 	
 	private JLabel label_prix;
-	private JTextField field_prix;
+	private JLabel field_prix;
 	
 	private JLabel label_RAM;
-	private JTextField field_RAM;
+	private JLabel field_RAM;
 	
 	private JLabel label_typeDD;
-	private JTextField field_typeDD;
+	private JLabel field_typeDD;
 	
 	private JLabel label_CG;
-	private JTextField field_CG;
+	private JLabel field_CG;
 	
 	private JLabel label_CM;
-	private JTextField field_CM;
+	private JLabel field_CM;
 	
 	private JLabel label_id;
-	private JTextField field_id;
+	private JLabel field_id;
 	
 	private JLabel label_nom;
-	private JTextField field_nom;
+	private JLabel field_nom;
 	
 	private JTextArea enTete;
 
@@ -110,9 +108,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p1 = new JPanel();
 		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
 		label_type = new JLabel("Type d'ordinateur :");
-		field_type = new JTextField();
-		field_type.setEditable(false);
-		field_type.setOpaque(false);
+		field_type = new JLabel();
 					
 		p1.add(label_type);
 		p1.add(Box.createRigidArea(new Dimension(20,0)));
@@ -121,9 +117,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p2 = new JPanel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
 		label_prix = new JLabel("Prix (en euros) :");
-		field_prix = new JTextField();
-		field_prix.setEditable(false);
-		field_prix.setOpaque(false);
+		field_prix = new JLabel();
 		//indiquer la taille si ça fonctionne pas sans ?
 		
 		p2.add(label_prix);
@@ -133,9 +127,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p3 = new JPanel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
 		label_RAM = new JLabel("Quantité de mémoire RAM (en Go) :");
-		field_RAM = new JTextField();
-		field_RAM.setEditable(false);
-		field_RAM.setOpaque(false);
+		field_RAM = new JLabel();
 				
 		p3.add(label_RAM);
 		p3.add(Box.createRigidArea(new Dimension(20,0)));
@@ -144,9 +136,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p4 = new JPanel();
 		p4.setLayout(new BoxLayout(p4,BoxLayout.LINE_AXIS));
 		label_typeDD = new JLabel("Type de Disque Dur :");
-		field_typeDD = new JTextField();
-		field_typeDD.setEditable(false);
-		field_typeDD.setOpaque(false);
+		field_typeDD = new JLabel();
 			
 		p4.add(label_typeDD);
 		p4.add(Box.createRigidArea(new Dimension(20,0)));
@@ -155,9 +145,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p5 = new JPanel();
 		p5.setLayout(new BoxLayout(p5,BoxLayout.LINE_AXIS));
 		label_CG = new JLabel("Marque de la Carte Graphique :");
-		field_CG = new JTextField();
-		field_CG.setEditable(false);
-		field_CG.setOpaque(false);
+		field_CG = new JLabel();
 				
 		p5.add(label_CG);
 		p5.add(Box.createRigidArea(new Dimension(20,0)));
@@ -166,9 +154,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p6 = new JPanel();
 		p6.setLayout(new BoxLayout(p6,BoxLayout.LINE_AXIS));
 		label_CM = new JLabel("Format de la carte mère :");
-		field_CM = new JTextField();
-		field_CM.setEditable(false);
-		field_CM.setOpaque(false);
+		field_CM = new JLabel();
 		
 		p6.add(label_CM);
 		p6.add(Box.createRigidArea(new Dimension(20,0)));
@@ -177,9 +163,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p7 = new JPanel();
 		p7.setLayout(new BoxLayout(p7,BoxLayout.LINE_AXIS));
 		label_id = new JLabel("Identifiant :");
-		field_id = new JTextField();
-		field_id.setEditable(false);
-		field_id.setOpaque(false);
+		field_id = new JLabel();
 		
 		p7.add(label_id);
 		p7.add(Box.createRigidArea(new Dimension(20,0)));
@@ -188,9 +172,7 @@ public class Panneau_resultat extends JPanel {
 		JPanel p8 = new JPanel();
 		p8.setLayout(new BoxLayout(p8,BoxLayout.LINE_AXIS));
 		label_nom = new JLabel("Nom :");
-		field_nom =new JTextField();
-		field_nom.setEditable(false);
-		field_nom.setOpaque(false);
+		field_nom =new JLabel();
 		
 		p8.add(label_nom);
 		p8.add(Box.createRigidArea(new Dimension(20,0)));
