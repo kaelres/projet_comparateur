@@ -7,21 +7,30 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.postgresql.util.PSQLException;
+
+import controleur.Controleur;
 import controleur.MaConnexion;
+import controleur.OrdiDAO;
+import modele.Ordinateur;
 
 @SuppressWarnings("serial")
 public class Panneau_critere extends JPanel
 {
 	private Fenetre_client f_cri;
+	private Controleur cont;
 	
 	private JLabel label_type;
 	private JComboBox<String> liste_type;
@@ -46,16 +55,12 @@ public class Panneau_critere extends JPanel
 	
 	/*
 	 * pour plus tard quand on fera la requête
-	private String client_Type;
-	private int client_Prix;
-	private String client_RAM;
-	private String client_TypeDD;
-	private String client_CG;
-	private String client_CM;
+	
 	 */
-	Panneau_critere(Fenetre_client f)
+	Panneau_critere(Fenetre_client f, Controleur c)
 	{
 		f_cri=f;
+		cont =c;
 		setLayout(new BorderLayout());
 		
 		Panel p0=new Panel();
@@ -128,7 +133,7 @@ public class Panneau_critere extends JPanel
 		Panel p8=new Panel();
 		p8.setLayout(new BoxLayout(p8,BoxLayout.LINE_AXIS));
 		label_CM=new JLabel("Format de la carte mère :");
-		String[] liste_choixCM= {"ATX standard","micro-ATX","ASUS","mini-ITX"};
+		String[] liste_choixCM= {"ATX_standard","micro_ATX", "mini_ITX"};
 		liste_CM=new JComboBox<String>(liste_choixCM);
 		liste_CM.setSelectedIndex(0);
 		liste_CM.setLightWeightPopupEnabled (false);
@@ -173,8 +178,41 @@ public class Panneau_critere extends JPanel
 	class BoutonVListener implements ActionListener 
 	{
 		public void actionPerformed(ActionEvent arg0)
-		{
- 
+		{		    
+		    //On supprime tous les espaces du prix pour éviter une NUmberFormatException
+		    String str = champ_prix.getText();
+		    String prix = str.replaceAll("\\s", "");
+			try {
+					//On vérifie la validitée du prix
+					String query= "";
+					String[] tab = {"type = ", "prix = ", "ram = ", "disque = ", "carte_G = ", "carte_M = ", "nom = "};
+					query += tab[0] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
+					query += tab[1] + "\'" + Double.parseDouble(prix) +"\' AND ";
+					query += tab[2] + "\'" +liste_RAM.getSelectedItem() +"\' AND ";
+					query += tab[3] + "\'" +(String )liste_typeDD.getSelectedItem()+"\' AND ";
+					query += tab[4] + "\'" +(String )liste_CG.getSelectedItem()+"\' AND ";
+					query += tab[5] + "\'" +(String )liste_CM.getSelectedItem()+"\'";
+			
+					String data = query.replaceAll(" AND $", "");
+					OrdiDAO dao = cont.getOrdiDAO();
+					
+					//Il faudra créer une fonction qui récupere  tous les ordis puis les compare
+					//Quel rpz des ordis ?
+					ArrayList<Ordinateur> ordiListe = dao.search(data);
+					new Fenetre_resultat(ordiListe);
+					
+				
+		    } catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(	null, 
+						"Le prix ne doit pas contenir de lettre ou être vide", 
+						"Erreur de prix", 
+						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} catch (PSQLException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}	  
 	}
 	class BoutonAListener implements ActionListener 

@@ -62,7 +62,6 @@ public class MaConnexion {
 			
 		   	String privilege = priv.getString("PRIVILEGE");
 		   	String grantee = priv.getString("GRANTEE");
-		   	System.out.println(grantee+" "+privilege);
 		   	if ( (grantee.equals("\\\""+nom+"\\\""))&&(privilege.equals("UPDATE")) ) MaConnexion.SetAdmin();
 		}		    
 	}
