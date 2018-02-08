@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import controleur.Controleur;
 
 @SuppressWarnings("serial")
 public class Fenetre_client extends JFrame
