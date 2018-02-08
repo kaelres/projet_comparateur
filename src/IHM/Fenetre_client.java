@@ -13,14 +13,15 @@ public class Fenetre_client extends JFrame
 	Fenetre_client ()
 	{
 		super();
-		this.setTitle("Choix des critères");
+		this.setTitle("Choix des critÃ¨res");
 		Toolkit tk=Toolkit.getDefaultToolkit();
 		Dimension dim=tk.getScreenSize();
 		int largeur=dim.width;
 		int hauteur=dim.height;
 		this.setSize( largeur/2, hauteur/2);
 		this.setLocationRelativeTo(null);
-		panneau=new Panneau_critere(this);
+		Controleur C = new Controleur();
+		panneau=new Panneau_critere(this, C);
 		add(panneau);
 		JScrollPane scrollPane = new JScrollPane(panneau);
 		add(scrollPane);
