@@ -228,6 +228,8 @@ public class Panneau_admin_ajout extends JPanel
 												"Erreur de prix et/ou de nom", 
 												JOptionPane.ERROR_MESSAGE);
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(	null, 
 						"Le prix ne doit pas contenir de lettre", 
