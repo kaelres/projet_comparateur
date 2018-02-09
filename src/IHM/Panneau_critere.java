@@ -96,7 +96,7 @@ public class Panneau_critere extends JPanel
 				
 		Panel p3=new Panel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
-		label_prix=new JLabel("Prix (en €) :");
+		label_prix=new JLabel("Budget (en €) :");
 		champ_prix=new JTextField(); // on accepte que les entiers
 		p3.add(label_prix);
 		p3.add(Box.createRigidArea(new Dimension(20,0)));
