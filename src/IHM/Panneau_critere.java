@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -18,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.postgresql.util.PSQLException;
+
 import controleur.Controleur;
 import controleur.MaConnexion;
 import controleur.OrdiDAO;
@@ -28,6 +31,9 @@ public class Panneau_critere extends JPanel
 {
 	private Fenetre_client f_cri;
 	private Controleur cont;
+	
+	private JLabel label_usage;
+	private JComboBox<String> liste_usage;
 	
 	private JLabel label_type;
 	private JComboBox<String> liste_type;
@@ -68,6 +74,17 @@ public class Panneau_critere extends JPanel
 		label_titre1.setFont(font);
 		label_titre1.setForeground(Color.BLUE);
 		p0.add(label_titre1);
+		
+		Panel p1=new Panel();
+		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
+		JLabel label_usage=new JLabel("Usage :");
+		p1.add(label_usage);
+		String[] liste_choixUsage= {"Bureautique","Gaming"};
+		liste_usage=new JComboBox<String>(liste_choixUsage);
+		liste_usage.setSelectedIndex(0);
+		liste_usage.setLightWeightPopupEnabled (false);
+		p1.add(Box.createRigidArea(new Dimension(20,0)));
+		p1.add(liste_usage);
 		
 		Panel p2=new Panel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
@@ -144,6 +161,8 @@ public class Panneau_critere extends JPanel
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p0);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
+		p_formu.add(p1);
+		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p2);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p3);
@@ -207,6 +226,10 @@ public class Panneau_critere extends JPanel
 						"Le prix ne doit pas contenir de lettre ou être vide", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} catch (PSQLException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}	  
