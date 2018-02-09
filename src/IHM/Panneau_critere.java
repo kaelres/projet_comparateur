@@ -29,6 +29,9 @@ public class Panneau_critere extends JPanel
 	private Fenetre_client f_cri;
 	private Controleur cont;
 	
+	private JLabel label_usage;
+	private JComboBox<String> liste_usage;
+	
 	private JLabel label_type;
 	private JComboBox<String> liste_type;
 	
@@ -51,7 +54,7 @@ public class Panneau_critere extends JPanel
 	private JButton b_ajouter;
 	
 	/*
-	 * pour plus tard quand on fera la requête
+	 * pour plus tard quand on fera la requÃªte
 	
 	 */
 	Panneau_critere(Fenetre_client f, Controleur c)
@@ -69,6 +72,17 @@ public class Panneau_critere extends JPanel
 		label_titre1.setForeground(Color.BLUE);
 		p0.add(label_titre1);
 		
+		Panel p1=new Panel();
+		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
+		JLabel label_usage=new JLabel("Usage :");
+		p1.add(label_usage);
+		String[] liste_choixUsage= {"Bureautique","Gaming"};
+		liste_usage=new JComboBox<String>(liste_choixUsage);
+		liste_usage.setSelectedIndex(0);
+		liste_usage.setLightWeightPopupEnabled (false);
+		p1.add(Box.createRigidArea(new Dimension(20,0)));
+		p1.add(liste_usage);
+		
 		Panel p2=new Panel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
 		label_type=new JLabel("Type d'ordinateur :");
@@ -82,7 +96,7 @@ public class Panneau_critere extends JPanel
 				
 		Panel p3=new Panel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
-		label_prix=new JLabel("Prix (en €) :");
+		label_prix=new JLabel("Budget (en â‚¬) :");
 		champ_prix=new JTextField(); // on accepte que les entiers
 		p3.add(label_prix);
 		p3.add(Box.createRigidArea(new Dimension(20,0)));
@@ -90,14 +104,14 @@ public class Panneau_critere extends JPanel
 		
 		Panel p4=new Panel();
 		p4.setLayout(new BoxLayout(p4,BoxLayout.LINE_AXIS));
-		JLabel label_titre2=new JLabel("Caractéristiques :");
+		JLabel label_titre2=new JLabel("CaractÃ©ristiques :");
 		label_titre2.setFont(font);
 		label_titre2.setForeground(Color.BLUE);
 		p4.add(label_titre2);
 			
 		Panel p5=new Panel();
 		p5.setLayout(new BoxLayout(p5,BoxLayout.LINE_AXIS));
-		label_RAM=new JLabel("Quantité de mémoire RAM (en Go) :");
+		label_RAM=new JLabel("QuantitÃ© de mÃ©moire RAM (en Go) :");
 		Integer[] liste_choixRAM= {2,4,8,16,32};
 		liste_RAM= new JComboBox<Integer>(liste_choixRAM);
 		liste_RAM.setSelectedIndex(0);
@@ -109,7 +123,7 @@ public class Panneau_critere extends JPanel
 		Panel p6=new Panel();
 		p6.setLayout(new BoxLayout(p6,BoxLayout.LINE_AXIS));
 		label_typeDD=new JLabel("Type de Disque Dur :");
-		String[] liste_choixDD= {"Mécanique","SSD"};
+		String[] liste_choixDD= {"MÃ©canique","SSD"};
 		liste_typeDD=new JComboBox<String>(liste_choixDD);
 		liste_typeDD.setSelectedIndex(0);
 		liste_typeDD.setLightWeightPopupEnabled (false);
@@ -130,7 +144,7 @@ public class Panneau_critere extends JPanel
 		
 		Panel p8=new Panel();
 		p8.setLayout(new BoxLayout(p8,BoxLayout.LINE_AXIS));
-		label_CM=new JLabel("Format de la carte mère :");
+		label_CM=new JLabel("Format de la carte mÃ¨re :");
 		String[] liste_choixCM= {"ATX_standard","micro_ATX", "mini_ITX"};
 		liste_CM=new JComboBox<String>(liste_choixCM);
 		liste_CM.setSelectedIndex(0);
@@ -144,11 +158,13 @@ public class Panneau_critere extends JPanel
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p0);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
+		p_formu.add(p1);
+		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p2);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p3);
 		p_formu.add(Box.createRigidArea(new Dimension(0,30)));
-//		p_formu.add(Box.createVerticalGlue());     ça marche pas
+//		p_formu.add(Box.createVerticalGlue());     Ã§a marche pas
 		p_formu.add(p4);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p5);
@@ -179,11 +195,11 @@ public class Panneau_critere extends JPanel
 	{
 		public void actionPerformed(ActionEvent arg0)
 		{		    
-		    //On supprime tous les espaces du prix pour éviter une NUmberFormatException
+		    //On supprime tous les espaces du prix pour Ã©viter une NUmberFormatException
 		    String str = champ_prix.getText();
 		    String prix = str.replaceAll("\\s", "");
 			try {
-					//On vérifie la validitée du prix
+					//On vÃ©rifie la validitÃ©e du prix
 					String query= "";
 					String[] tab = {"type = ", "prix = ", "ram = ", "disque = ", "carte_G = ", "carte_M = ", "nom = "};
 					query += tab[0] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
@@ -196,7 +212,7 @@ public class Panneau_critere extends JPanel
 					String data = query.replaceAll(" AND $", "");
 					OrdiDAO dao = cont.getOrdiDAO();
 					
-					//Il faudra créer une fonction qui récupere  tous les ordis puis les compare
+					//Il faudra crÃ©er une fonction qui rÃ©cupere  tous les ordis puis les compare
 					//Quel rpz des ordis ?
 					ArrayList<Ordinateur> ordiListe = dao.search(data);
 					new Fenetre_resultat(ordiListe);
@@ -204,7 +220,7 @@ public class Panneau_critere extends JPanel
 				
 		    } catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(	null, 
-						"Le prix ne doit pas contenir de lettre ou être vide", 
+						"Le prix ne doit pas contenir de lettre ou Ãªtre vide", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
