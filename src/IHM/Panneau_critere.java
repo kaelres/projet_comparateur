@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -18,8 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import org.postgresql.util.PSQLException;
 
 import controleur.Controleur;
 import controleur.MaConnexion;
@@ -61,8 +58,7 @@ public class Panneau_critere extends JPanel
 	{
 		f_cri=f;
 		cont =c;
-		JPanel conteneur=new JPanel();
-		conteneur.setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 		
 		Panel p0=new Panel();
 		p0.setLayout(new BoxLayout(p0,BoxLayout.LINE_AXIS));
@@ -162,7 +158,7 @@ public class Panneau_critere extends JPanel
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p8);
 		p_formu.add(Box.createRigidArea(new Dimension(0,50)));
-		conteneur.add(p_formu,BorderLayout.CENTER);
+		add(p_formu,BorderLayout.WEST);
 		
 		
 		Panel p_boutons=new Panel();	
@@ -172,9 +168,7 @@ public class Panneau_critere extends JPanel
 		b_ajouter.addActionListener(new BoutonVListener());
 		p_boutons.add(b_annuler);
 		p_boutons.add(b_ajouter);
-		conteneur.add(p_boutons,BorderLayout.SOUTH);
-		
-		add(conteneur);
+		add(p_boutons,BorderLayout.SOUTH);
 	}
 	
 
@@ -210,10 +204,6 @@ public class Panneau_critere extends JPanel
 						"Le prix ne doit pas contenir de lettre ou être vide", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			} catch (PSQLException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}	  
