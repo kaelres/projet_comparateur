@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 
 import controleur.Controleur;
 
+@SuppressWarnings("serial")
 public class Panneau_compte_client extends JPanel
 {
 
