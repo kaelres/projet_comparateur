@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -18,8 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import org.postgresql.util.PSQLException;
 
 import controleur.Controleur;
 import controleur.MaConnexion;
@@ -210,10 +207,6 @@ public class Panneau_critere extends JPanel
 						"Le prix ne doit pas contenir de lettre ou être vide", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			} catch (PSQLException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}	  

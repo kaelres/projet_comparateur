@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import org.postgresql.util.PSQLException;
 
 import controleur.Controleur;
 import controleur.MaConnexion;
@@ -387,10 +384,6 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 						"Le prix ne doit pas contenir de lettre", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			} catch (PSQLException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}	  

@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 
 import controleur.Controleur;
 
+@SuppressWarnings("serial")
 public class Panneau_client extends JPanel
 {
 	Panneau_client(Fenetre_client f, Controleur cont)

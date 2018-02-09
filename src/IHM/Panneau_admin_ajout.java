@@ -63,7 +63,7 @@ public class Panneau_admin_ajout extends JPanel
 		f_admin=f;
 		
 		/*.setLightWeightPopupEnabled (false);
-		 * très important sinon les jcombobox ne peuvent être deroulés pour voir les items des fois*/
+		 * trÃ¨s important sinon les jcombobox ne peuvent Ãªtre deroulÃ©s pour voir les items des fois*/
 		JPanel conteneur=new JPanel();
 		conteneur.setLayout(new BorderLayout());
 		
@@ -95,7 +95,7 @@ public class Panneau_admin_ajout extends JPanel
 				
 		Panel p3=new Panel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
-		label_prix=new JLabel("Prix (en €) :");
+		label_prix=new JLabel("Prix (en â‚¬) :");
 		champ_prix=new JTextField(10); // on accepte que les entiers
 		p3.add(label_prix);
 		p3.add(Box.createRigidArea(new Dimension(20,0)));
@@ -103,14 +103,14 @@ public class Panneau_admin_ajout extends JPanel
 		
 		Panel p4=new Panel();
 		p4.setLayout(new BoxLayout(p4,BoxLayout.LINE_AXIS));
-		JLabel label_titre2=new JLabel("Caractéristiques :");
+		JLabel label_titre2=new JLabel("CaractÃ©ristiques :");
 		label_titre2.setFont(font);
 		label_titre2.setForeground(Color.BLUE);
 		p4.add(label_titre2);
 			
 		Panel p5=new Panel();
 		p5.setLayout(new BoxLayout(p5,BoxLayout.LINE_AXIS));
-		label_RAM=new JLabel("Quantité de mémoire RAM (en Go) :");
+		label_RAM=new JLabel("QuantitÃ© de mÃ©moire RAM (en Go) :");
 		Integer[] liste_choixRAM= {2,4,8,16,32};
 		liste_RAM= new JComboBox<Integer>(liste_choixRAM);
 		liste_RAM.setLightWeightPopupEnabled (false);
@@ -121,7 +121,7 @@ public class Panneau_admin_ajout extends JPanel
 		Panel p6=new Panel();
 		p6.setLayout(new BoxLayout(p6,BoxLayout.LINE_AXIS));
 		label_typeDD=new JLabel("Type de Disque Dur :");
-		String[] liste_choixDD= {"Mécanique","SSD"};
+		String[] liste_choixDD= {"MÃ©canique","SSD"};
 		liste_typeDD=new JComboBox<String>(liste_choixDD);
 		liste_typeDD.setLightWeightPopupEnabled (false);
 		p6.add(label_typeDD);
@@ -140,7 +140,7 @@ public class Panneau_admin_ajout extends JPanel
 		
 		Panel p8=new Panel();
 		p8.setLayout(new BoxLayout(p8,BoxLayout.LINE_AXIS));
-		label_CM=new JLabel("Format de la carte mère :");
+		label_CM=new JLabel("Format de la carte mÃ¨re :");
 		String[] liste_choixCM= {"ATX_standard","micro_ATX","mini_ITX"};
 		liste_CM=new JComboBox<String>(liste_choixCM);
 		liste_CM.setLightWeightPopupEnabled (false);
@@ -205,12 +205,12 @@ public class Panneau_admin_ajout extends JPanel
 				ResultSet result = myDAO.exec("SELECT MAX(id) FROM \"Ordinateur\"");
 				result.next();
 				
-				//On supprime les espaces avant et après le nom
+				//On supprime les espaces avant et aprÃ¨s le nom
 				String str = champ_nom.getText();
 				String passageUn = str.replaceAll("\\s+$", "");
 			    String nom = passageUn.replaceAll("^\\s+", "");
 			    
-			    //On supprime tous les espaces du prix pour éviter une NUmberFormatException
+			    //On supprime tous les espaces du prix pour Ã©viter une NUmberFormatException
 			    str = champ_prix.getText();
 			    String prix = str.replaceAll("\\s", "");
 				
@@ -220,11 +220,11 @@ public class Panneau_admin_ajout extends JPanel
 												(String )liste_type.getSelectedItem(), (String )liste_CG.getSelectedItem(),
 												(String )liste_CM.getSelectedItem(), nom, result.getInt(1)+1);
 				
-																				//On necessite d'être admin pour acceder à la fenetre, 
-					myDAO.add(ordi);											//on a donc accès au DAO admin	Le cas test donc sûr											
+																				//On necessite d'Ãªtre admin pour acceder Ã  la fenetre, 
+					myDAO.add(ordi);											//on a donc accÃ¨s au DAO admin	Le cas test donc sÃ»r											
 				} else {
 					JOptionPane.showMessageDialog(	null, 
-												"Les champs prix et nom ne peuvent être vide.", 
+												"Les champs prix et nom ne peuvent Ãªtre vide.", 
 												"Erreur de prix et/ou de nom", 
 												JOptionPane.ERROR_MESSAGE);
 				}
