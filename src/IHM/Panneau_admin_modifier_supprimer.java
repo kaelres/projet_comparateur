@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import org.postgresql.util.PSQLException;
 
 import controleur.Controleur;
 import controleur.MaConnexion;
@@ -76,8 +73,8 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 	private JLabel label_nom;
 	private JTextField champ_nom;
 	
-	private String[] tab_critere= {"Nom","Type ordinateur","Prix","Mémoire RAM",
-			"Type Disque Dur","Carte Graphique","Carte mère", "Identifiant"};
+	private String[] tab_critere= {"Type ordinateur","Prix","Mémoire RAM",
+			"Type Disque Dur","Carte Graphique","Carte mère", "Identifiant", "Nom"};
 	
 	private ArrayList<JCheckBox> tab1=new ArrayList<JCheckBox>();
 	private ArrayList<JPanel> tab2=new ArrayList<JPanel>();
@@ -95,31 +92,31 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 			
 		JPanel p_ligne1=new JPanel();
 		p_ligne1.setLayout(new BoxLayout(p_ligne1,BoxLayout.LINE_AXIS));
-		case_nom = new JCheckBox(tab_critere[0]);
-		case_nom.addActionListener(new CaseListener());
-		p_ligne1.add(case_nom);
-		case_type=new JCheckBox(tab_critere[1]);
+		case_type=new JCheckBox(tab_critere[0]);
 		case_type.addActionListener(new CaseListener());
 		p_ligne1.add(case_type);
-		case_prix=new JCheckBox(tab_critere[2]);
+		case_prix=new JCheckBox(tab_critere[1]);
 		case_prix.addActionListener(new CaseListener());
 		p_ligne1.add(case_prix);
-		case_RAM=new JCheckBox(tab_critere[3]);
+		case_RAM=new JCheckBox(tab_critere[2]);
 		case_RAM.addActionListener(new CaseListener());
 		p_ligne1.add(case_RAM);
+		case_nom = new JCheckBox(tab_critere[7]);
+		case_nom.addActionListener(new CaseListener());
+		p_ligne1.add(case_nom);
 				
 		JPanel p_ligne2=new JPanel();
 		p_ligne2.setLayout(new BoxLayout(p_ligne2,BoxLayout.LINE_AXIS));
-		case_typeDD=new JCheckBox(tab_critere[4]);
+		case_typeDD=new JCheckBox(tab_critere[3]);
 		case_typeDD.addActionListener(new CaseListener());
 		p_ligne2.add(case_typeDD);
-		case_CG=new JCheckBox(tab_critere[5]);
+		case_CG=new JCheckBox(tab_critere[4]);
 		case_CG.addActionListener(new CaseListener());
 		p_ligne2.add(case_CG);
-		case_CM=new JCheckBox(tab_critere[6]);
+		case_CM=new JCheckBox(tab_critere[5]);
 		case_CM.addActionListener(new CaseListener());
 		p_ligne2.add(case_CM);
-		case_id = new JCheckBox(tab_critere[7]);
+		case_id = new JCheckBox(tab_critere[6]);
 		case_id.addActionListener(new CaseListener());
 		p_ligne2.add(case_id);
 			
@@ -149,18 +146,6 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 //		p_choixcrit.setLayout(new BoxLayout(p_choixcrit,BoxLayout.PAGE_AXIS));
 		
 		JPanel p1=new JPanel();
-		
-		JPanel p0 = new JPanel();
-		p0.setLayout(new BoxLayout(p0,BoxLayout.LINE_AXIS));
-		label_nom = new JLabel("Nom :");
-		champ_nom =new JTextField(10); 
-		tab1.add(case_nom);
-		tab2.add(p0);
-		
-		p0.add(label_nom);
-		p0.add(Box.createRigidArea(new Dimension(20,0)));
-		p0.add(champ_nom);
-		
 		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
 		label_type=new JLabel("Type d'ordinateur :");
 		String[] liste_choixType= {"Portable","Fixe"};
@@ -168,7 +153,6 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		liste_type.setLightWeightPopupEnabled (false);
 		tab1.add(case_type);
 		tab2.add(p1);
-		
 				
 		p1.add(label_type);
 		p1.add(Box.createRigidArea(new Dimension(20,0)));
@@ -248,17 +232,24 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		p7.add(Box.createRigidArea(new Dimension(20,0)));
 		p7.add(champ_id);
 		
-
+		JPanel p8 = new JPanel();
+		p8.setLayout(new BoxLayout(p8,BoxLayout.LINE_AXIS));
+		label_nom = new JLabel("Nom :");
+		champ_nom =new JTextField(10); 
+		tab1.add(case_nom);
+		tab2.add(p8);
+		
+		p8.add(label_nom);
+		p8.add(Box.createRigidArea(new Dimension(20,0)));
+		p8.add(champ_nom);
 		
 		JPanel p_formu=new JPanel();
 		p_formu.setLayout(new BoxLayout(p_formu, BoxLayout.PAGE_AXIS));
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
-		p_formu.add(p0);
-		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p1);
-		p_formu.add(Box.createRigidArea(new Dimension(0,30)));
-		p_formu.add(p2);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
+		p_formu.add(p2);
+		p_formu.add(Box.createRigidArea(new Dimension(0,30)));
 		p_formu.add(p3);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p4);
@@ -268,6 +259,8 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		p_formu.add(p6);
 		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
 		p_formu.add(p7);
+		p_formu.add(Box.createRigidArea(new Dimension(0,10)));
+		p_formu.add(p8);
 			
 		JPanel p_bouton2=new JPanel();
 		b_retour2=new JButton("Retour");
@@ -354,7 +347,7 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		    str = champ_prix.getText();
 		    String prix = str.replaceAll("\\s", "");
 			try {
-					//On vérifie la validité du prix
+					//On vérifie la validitée du prix
 					String query= "";
 					String[] tab = {"type = ", "prix = ", "ram = ", "disque = ", "carte_G = ", "carte_M = ", "id = ", "nom = "};
 					if (tab2.get(0).isVisible()) query += tab[0] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
@@ -387,10 +380,6 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 						"Le prix ne doit pas contenir de lettre", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			} catch (PSQLException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}	  

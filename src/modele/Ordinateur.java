@@ -1,5 +1,10 @@
 package modele;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import IHM.Fenetre_resultat;
+
 public class Ordinateur {
 
 	private double prix;
@@ -10,6 +15,8 @@ public class Ordinateur {
 	private String cm;
 	private String nom;
 	private int id;
+	
+	private double score;
 	
 	public Ordinateur(double p, int r, String d, String t, 
 					  String c, String m, String n, int i) {
@@ -22,6 +29,7 @@ public class Ordinateur {
 		setCm(m);
 		setNom(n);
 		setId(i);
+		setScore(0);
 	}
 	
 	public double getPrix() { return prix;}
@@ -48,4 +56,17 @@ public class Ordinateur {
 	public int getId() { return id;}
 	public void setId(int i) { id = i;}
 
+	public double getScore() { return score;}
+	public void setScore(double score) { this.score = score;}
+	
+	public static void main(String[] args) {
+		ArrayList<Ordinateur> a = new ArrayList<>();
+		a.add(new Ordinateur(40.0, 8, "Mécanique", "Fixe", "ASUS", "mini_ITX", "1a6", 3));
+		a.add(new Ordinateur(100.0, 16, "SSD", "Fixe", "ASUS", "mini_ITX", "1a6", 2));
+		a.add(new Ordinateur(10.0, 2, "Mécanique", "Portable", "ASUS", "mini_ITX", "1a6", 4));
+		JugeOrdinateur juge = new JugeOrdinateur(new Ordinateur(10.0, 2, "Mécanique", "Portable", "ASUS", "mini_ITX", "1a6", 4));
+		for (Ordinateur o : a) juge.juger(o);
+		a.sort(new ComparateurOrdi());
+		new Fenetre_resultat(a);
+	}
 }
