@@ -355,27 +355,28 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 			try {
 					//On vérifie la validité du prix
 					String query= "WHERE ";
-					String[] tab = {"type = ", "prix = ", "ram = ", "disque = ", "carte_G = ", "carte_M = ", "id = ", "nom = "};
-					if (tab2.get(0).isVisible()) query += tab[0] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
-					if (tab2.get(1).isVisible()) query += tab[1] + "\'" + Double.parseDouble(prix) +"\' AND ";
-					if (tab2.get(2).isVisible()) query += tab[2] + "\'" +liste_RAM.getSelectedItem() +"\' AND ";
-					if (tab2.get(3).isVisible()) query += tab[3] + "\'" +(String )liste_typeDD.getSelectedItem()+"\' AND ";
-					if (tab2.get(4).isVisible()) query += tab[4] + "\'" +(String )liste_CG.getSelectedItem()+"\' AND ";
-					if (tab2.get(5).isVisible()) query += tab[5] + "\'" +(String )liste_CM.getSelectedItem()+"\' AND ";
-					if (tab2.get(6).isVisible()) query += tab[6] + "\'" +champ_id.getText() +"\' AND ";
-					if (tab2.get(7).isVisible()) query += tab[7] + "\'" +nom +"\' AND ";
+					String[] tab = {"nom = ", "type = ", "prix = ", "ram = ", "disque = ", "carte_g = ", "carte_m = ", "id = "};
+					if (tab2.get(0).isVisible()) query += tab[0] + "\'" +nom +"\' AND ";
+					if (tab2.get(1).isVisible()) query += tab[1] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
+					if (tab2.get(2).isVisible()) query += tab[2] + "\'" + Double.parseDouble(prix) +"\' AND ";
+					if (tab2.get(3).isVisible()) query += tab[3] + "\'" +liste_RAM.getSelectedItem() +"\' AND ";
+					if (tab2.get(4).isVisible()) query += tab[4] + "\'" +(String )liste_typeDD.getSelectedItem()+"\' AND ";
+					if (tab2.get(5).isVisible()) query += tab[5] + "\'" +(String )liste_CG.getSelectedItem()+"\' AND ";
+					if (tab2.get(6).isVisible()) query += tab[6] + "\'" +(String )liste_CM.getSelectedItem()+"\' AND ";
+					if (tab2.get(7).isVisible()) query += tab[7] + "\'" +champ_id.getText() +"\' AND ";
 			
 					String data = query.replaceAll(" AND $", "");
 					OrdiDAO_Admin dao = (OrdiDAO_Admin )cont.getOrdiDAO();
 					
-					if 	( (tab2.get(7).isVisible() && nom.equals("")) ||
-						(tab2.get(6).isVisible() && champ_id.getText().equals("")) ) {		//prix vide => NumberFormatException ,pas a check donc
+					if 	( (tab2.get(0).isVisible() && nom.equals("")) ||
+						(tab2.get(7).isVisible() && champ_id.getText().equals("")) ) {		//prix vide => NumberFormatException ,pas a check donc
 						JOptionPane.showMessageDialog(	null, 
 														"Un champ choisi doit etre rempli.", 
 														"Erreur de saisie", 
 														JOptionPane.ERROR_MESSAGE);
 					} else {
 						ArrayList<Ordinateur> ordiListe = dao.search(data);
+						System.out.println(data);
 						resultatRecherche = new Fenetre_resultat_admin(ordiListe, cont);
 					}
 					
