@@ -113,7 +113,7 @@ public class Panneau_resultat_admin extends JPanel {
 		//CENTER
 		
 		enTete = new JTextArea("Aucun résultat n'a été trouvé");
-		if (iteNext.hasNext()) {
+		if (iteNext.hasNext()) {			
 			courant = iteNext.next();
 			enTete.setText("Vous trouverez ci-dessous les ordinateurs trouvés.\n"
 							+ "Leurs caractéristiques sont visibles ci-dessous et modifiables.\n"
@@ -329,28 +329,37 @@ public class Panneau_resultat_admin extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
+			Ordinateur o = courant;
+			
 			//suppression en BDD
-			dao.remove(courant);
+			dao.remove(o);
+			
+			itePrevious.next();
+			itePrevious.previous();
+			
 			//supression de la liste
-			if (avancerAuDernier) iteNext.remove();
-			else itePrevious.remove();
-			
-			//remise du curseur en début de liste
-			itePrevious = liste.listIterator();
-			iteNext = liste.listIterator();
-			b_precedant.setEnabled(false);
-			
-			if (iteNext.hasNext()) {
-				courant = iteNext.next();
-				maj_ihm();
-				b_suivant.setEnabled(true);
-			}
-			else {			//plus aucun element
-				enTete.setText("Aucun résultat restant");
-				courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
-				maj_ihm();
+			if (!liste.isEmpty()) {
+				itePrevious.remove();
+				
+				//remise du curseur en début de liste
+				itePrevious = liste.listIterator();
+				iteNext = liste.listIterator();
+				b_precedant.setEnabled(false);
 				b_suivant.setEnabled(false);
+				
+				if (iteNext.hasNext()) {
+					courant = iteNext.next();
+					maj_ihm();
+					if (iteNext.hasNext()) b_suivant.setEnabled(true);
+				}
+				else {			//plus aucun element
+					enTete.setText("Aucun résultat restant");
+					courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
+					maj_ihm();
+				}
 			}
+			
+			
 		}
 		
 	}
