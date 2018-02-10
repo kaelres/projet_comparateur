@@ -21,41 +21,29 @@ public class ReservationDAO {
 		
 		ArrayList<Reservation> array = new ArrayList<>();
 		String query = "SELECT * FROM \"Reservation\" WHERE login_client = \'"+client.getLogin()+"\'";
-		String nomC, nomO;
-		double prixO;
-		ResultSet result_2;
 		
 		try {
 			Statement st = MaConnexion.getInstance().createStatement();
 			ResultSet result = st.executeQuery(query);
 			
 			while (result.next()) {
-				
-				/*Si il existe une reservation, l'ordinateur existe donc il y a moyen d'utiliser next()
-				 * De plus, l'id est la clef primaire, il n'y a donc qu'un seul rÈsultat*/
-				result_2 = st.executeQuery("SELECT nom, Prix FROM \"Ordinateur\" WHERE id ="+result.getInt(2));
-				result_2.next();
-				nomO = result_2.getString(1);
-				prixO = result_2.getDouble(2);
-				
-				result_2 = st.executeQuery("SELECT nom FROM \"Client\" WHERE login = \'"+client.getLogin()+"\'");
-				result_2.next();
-				nomC = result_2.getString(1);
-				
-				Reservation r = new Reservation(result.getString(1), result.getInt(2), prixO, nomO, nomC);
+
+				String login = result.getString(1);
+				int id = result.getInt(2);
+				Reservation r = new Reservation(login, id);
 				array.add(r);
 			}
 		} catch (PSQLException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(	null, 
-											"Erreur PSQL", 
-											"Etat de l'opÈration", 
+											"Erreur PSQL lors de la r√©cup√©ration d'une r√©s√©rvation", 
+											"Etat de l'op√©ration", 
 											JOptionPane.INFORMATION_MESSAGE);
 			e.printStackTrace();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(	null, 
-											"Erreur SQL", 
-											"Etat de l'opÈration", 
+											"Erreur SQL lors de la r√©cup√©ration d'une r√©s√©rvation", 
+											"Etat de l'op√©ration", 
 											JOptionPane.INFORMATION_MESSAGE);
 			e.printStackTrace();
 		}
@@ -65,24 +53,21 @@ public class ReservationDAO {
 	}
 
 	public void add(Reservation resa) {
-		String query = "INSERT INTO \"Ordinateur\" VALUES (?, ?)";
-		String str = "La crÈation de la rÈservation ‡ ";
+		String query = "INSERT INTO \"Reservation\" VALUES (\'"+resa.getLogin_client()+"\', "+resa.getId_ordi()+")";
+		String str = "La cr√©ation de la r√©servation √† ";
 		
 		try {
-			PreparedStatement prep = MaConnexion.getInstance().prepareStatement(query);
+			Statement st = MaConnexion.getInstance().createStatement();			
+			st.executeUpdate(query);
+			str += "r√©ussie.\n Celle-ci sera visible √† votre prochaine connexion.";
 			
-			prep.setString(1, resa.getLogin_client());;
-			prep.setInt(2, resa.getId_ordi());
-			
-			prep.executeUpdate(query);
-			str += "rÈussie.";
 		} catch (SQLException e) {
-			str += "ÈchouÈe.";
+			str += "√©chou√©e.";
 			e.printStackTrace();
 		} finally {
 			JOptionPane.showMessageDialog(	null, 
 											str, 
-											"Etat de l'opÈration", 
+											"Etat de l'op√©ration", 
 											JOptionPane.INFORMATION_MESSAGE);
 		}
 	}

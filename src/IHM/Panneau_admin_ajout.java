@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,8 +23,6 @@ import javax.swing.JTextField;
 import controleur.Controleur;
 import controleur.MaConnexion;
 import controleur.OrdiDAO_Admin;
-import modele.ExceptionNom;
-import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 
@@ -65,7 +65,7 @@ public class Panneau_admin_ajout extends JPanel
 		f_admin=f;
 		
 		/*.setLightWeightPopupEnabled (false);
-		 * très important sinon les jcombobox ne peuvent être deroulés pour voir les items des fois*/
+		 * trÃ¨s important sinon les jcombobox ne peuvent Ãªtre deroulÃ©s pour voir les items des fois*/
 		JPanel conteneur=new JPanel();
 		conteneur.setLayout(new BorderLayout());
 		
@@ -97,7 +97,7 @@ public class Panneau_admin_ajout extends JPanel
 				
 		Panel p3=new Panel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
-		label_prix=new JLabel("Prix (en €) :");
+		label_prix=new JLabel("Prix (en â‚¬) :");
 		champ_prix=new JTextField(10); // on accepte que les entiers
 		p3.add(label_prix);
 		p3.add(Box.createRigidArea(new Dimension(20,0)));
@@ -105,14 +105,14 @@ public class Panneau_admin_ajout extends JPanel
 		
 		Panel p4=new Panel();
 		p4.setLayout(new BoxLayout(p4,BoxLayout.LINE_AXIS));
-		JLabel label_titre2=new JLabel("Caractéristiques :");
+		JLabel label_titre2=new JLabel("CaractÃ©ristiques :");
 		label_titre2.setFont(font);
 		label_titre2.setForeground(Color.BLUE);
 		p4.add(label_titre2);
 			
 		Panel p5=new Panel();
 		p5.setLayout(new BoxLayout(p5,BoxLayout.LINE_AXIS));
-		label_RAM=new JLabel("Quantité de mémoire RAM (en Go) :");
+		label_RAM=new JLabel("QuantitÃ© de mÃ©moire RAM (en Go) :");
 		Integer[] liste_choixRAM= {2,4,8,16,32};
 		liste_RAM= new JComboBox<Integer>(liste_choixRAM);
 		liste_RAM.setLightWeightPopupEnabled (false);
@@ -123,7 +123,7 @@ public class Panneau_admin_ajout extends JPanel
 		Panel p6=new Panel();
 		p6.setLayout(new BoxLayout(p6,BoxLayout.LINE_AXIS));
 		label_typeDD=new JLabel("Type de Disque Dur :");
-		String[] liste_choixDD= {"Mécanique","SSD"};
+		String[] liste_choixDD= {"MÃ©canique","SSD"};
 		liste_typeDD=new JComboBox<String>(liste_choixDD);
 		liste_typeDD.setLightWeightPopupEnabled (false);
 		p6.add(label_typeDD);
@@ -142,7 +142,7 @@ public class Panneau_admin_ajout extends JPanel
 		
 		Panel p8=new Panel();
 		p8.setLayout(new BoxLayout(p8,BoxLayout.LINE_AXIS));
-		label_CM=new JLabel("Format de la carte mère :");
+		label_CM=new JLabel("Format de la carte mÃ¨re :");
 		String[] liste_choixCM= {"ATX_standard","micro_ATX","mini_ITX"};
 		liste_CM=new JComboBox<String>(liste_choixCM);
 		liste_CM.setLightWeightPopupEnabled (false);
@@ -203,23 +203,42 @@ public class Panneau_admin_ajout extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			try {
-				OrdiDAO_Admin myDAO = (OrdiDAO_Admin)cont.getOrdiDAO();
-				ResultSet result = myDAO.exec("SELECT MAX(id) FROM \"Ordinateur\"");
-				result.next();
 				
-				//On supprime les espaces avant et après le nom
+				OrdiDAO_Admin myDAO = (OrdiDAO_Admin)cont.getOrdiDAO();
+				ResultSet result = myDAO.exec("SELECT id FROM \"Ordinateur\"");
+				
+				ArrayList<Integer> liste_id = new ArrayList<>();
+				while (result.next()) {
+					liste_id.add(result.getInt(1));
+				}
+				
+				int i = 1;
+				while (i < 32767 && !liste_id.isEmpty()) {
+					if(!liste_id.contains(i)) {
+						break;
+					}
+					i++;
+				}
+				
+				//On supprime les espaces avant et aprï¿½s le nom
 				String str = champ_nom.getText();
 				String passageUn = str.replaceAll("\\s+$", "");
 			    String nom = passageUn.replaceAll("^\\s+", "");
 			    
-			    //On supprime tous les espaces du prix pour éviter une NUmberFormatException
+			    //On supprime tous les espaces du prix pour ï¿½viter une NUmberFormatException
 			    str = champ_prix.getText();
 			    String prix = str.replaceAll("\\s", "");
 				
 				double p = Double.parseDouble(prix);
+				
+				//Envoi d'exception si nÃ©cessaire
+				if (p <= 0) throw new ExceptionPrix();
+				if (nom.equals("")) throw new ExceptionNom();
+				
+				System.out.println("id : "+i);
 				Ordinateur ordi = new Ordinateur(p, (int )liste_RAM.getSelectedItem(), (String )liste_typeDD.getSelectedItem(),
 												(String )liste_type.getSelectedItem(), (String )liste_CG.getSelectedItem(),
-												(String )liste_CM.getSelectedItem(), nom, result.getInt(1)+1);
+												(String )liste_CM.getSelectedItem(), nom, i);
 				
 																				 
 				myDAO.add(ordi);
@@ -228,18 +247,21 @@ public class Panneau_admin_ajout extends JPanel
 				e.printStackTrace();
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(	null, 
-												"Le prix ne doit pas contenir de lettre, d'espaces et doit être renseigné", 
+												"Le prix ne doit pas contenir de lettre, d'espaces et doit Ãªtre renseignÃ©", 
 												"Erreur de prix", 
 												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ExceptionPrix e) {
 				JOptionPane.showMessageDialog(	null, 
-												"Le champ nom ne peut être laissé vide.", 
-												"Erreur de nom", 
+												"Le prix doit Ãªtre positif.", 
+												"Erreur de prix", 
 												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ExceptionNom e) {
-				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(	null, 
+												"Le champ nom ne peut Ãªtre laissÃ© vide.", 
+												"Erreur de nom", 
+												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 			

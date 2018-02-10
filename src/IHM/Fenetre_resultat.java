@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import controleur.Controleur;
+import modele.Client;
 import modele.Ordinateur;
 
 @SuppressWarnings("serial")
@@ -13,7 +15,7 @@ public class Fenetre_resultat extends JFrame {
 
 	private Panneau_resultat panneau;
 	
-	public Fenetre_resultat(ArrayList<Ordinateur> ordiListe) {
+	public Fenetre_resultat(ArrayList<Ordinateur> ordiListe, Client client, Controleur cont) {
 		super();
 		this.setTitle("Resultats de recherche");
 		Toolkit tk=Toolkit.getDefaultToolkit();
@@ -22,7 +24,7 @@ public class Fenetre_resultat extends JFrame {
 		int hauteur=dim.height;
 		this.setSize( largeur/2, hauteur/2);
 		this.setLocationRelativeTo(null);
-		panneau= new Panneau_resultat(this, ordiListe); 
+		panneau= new Panneau_resultat(this, ordiListe, client, cont); 
 		add(panneau);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

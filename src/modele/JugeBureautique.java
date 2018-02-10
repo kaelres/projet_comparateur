@@ -15,15 +15,15 @@ public class JugeBureautique implements Juge {
 	public JugeBureautique(Ordinateur o) {
 		setSouhait(o);
 		
-		ArrayList<String> famille_Mécanique = new ArrayList<>();
-		famille_Mécanique.add("SSD");
+		ArrayList<String> famille_MÃ©canique = new ArrayList<>();
+		famille_MÃ©canique.add("SSD");
 		ArrayList<String> famille_SSD = new ArrayList<>(); // vide
 		disque = new TreeMap<>();
-		disque.put("Mécanique", famille_Mécanique); disque.put("SSD", famille_SSD);
+		disque.put("MÃ©canique", famille_MÃ©canique); disque.put("SSD", famille_SSD);
 		
 		ArrayList<String> famille_Fixe = new ArrayList<>(); //vide
+		famille_Fixe.add("Portable");
 		ArrayList<String> famille_Portable = new ArrayList<>();
-		famille_Portable.add("Fixe");
 		type = new TreeMap<>();
 		type.put("Fixe", famille_Fixe); type.put("Portable", famille_Portable);
 		
@@ -57,12 +57,11 @@ public class JugeBureautique implements Juge {
 		//ram
 		if (souhait.getRAM() == o.getRAM()) score += 10;
 		else if ( (souhait.getRAM() == 2*o.getRAM()) || (2*souhait.getRAM() == o.getRAM()) ) score += 5;
-		//Si tu demandes 2Go, 4 G ça va, 8 c'est limite mais 16 et 32 c'est complètement inutile
 		
 		//disque
 		if (souhait.getDisque().equals(o.getDisque())) score += 10;
 		else if (disque.get(souhait.getDisque()).contains(o.getDisque())) score += 5;
-		//Si l'ordi actuel possède un disque appartenant à la famille du disque de celui souhaité par le client => +5
+		//Si l'ordi actuel possï¿½de un disque appartenant ï¿½ la famille du disque de celui souhaitï¿½ par le client => +5
 		
 		
 		//type
@@ -80,7 +79,6 @@ public class JugeBureautique implements Juge {
 		
 		//conclusion
 		o.setScore(score);
-		System.out.println("Bureautique => "+o.getNom()+" - "+o.getScore());
 	}
 
 	public Ordinateur getSouhait() { return souhait;}

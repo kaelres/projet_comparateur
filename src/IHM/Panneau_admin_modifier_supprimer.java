@@ -18,28 +18,18 @@ import javax.swing.JTextField;
 import controleur.Controleur;
 import controleur.MaConnexion;
 import controleur.OrdiDAO_Admin;
-import modele.ExceptionNom;
-import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 @SuppressWarnings("serial")
 public class Panneau_admin_modifier_supprimer extends JPanel
 {
 	private Fenetre_admin f_admin;
-	Fenetre_resultat_admin resultatRecherche;
+	Fenetre_resultat_admin resultatRecherche;	
+	
+	private JPanel p_choix1;
 
 	private JButton b_retour1;
 	private JButton b_val;
-
-	private JButton b_retour2;
-	private JButton b_annuler;
-	private JButton b_rechercher;
-	
-//	private JLabel label_nom;
-//	private JTextField champ_nom;
-	
-	private JPanel p_choix1;
-	private JPanel p_choix2;
 	
 	private JLabel label_critere;
 	private JCheckBox case_type;
@@ -50,33 +40,33 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 	private JCheckBox case_CM;
 	private JCheckBox case_id;
 	private JCheckBox case_nom;
+
+	private JPanel p_choix2;
+	
+	private JButton b_retour2;
+	private JButton b_annuler;
+	private JButton b_rechercher;
 	
 	private JLabel label_type;
-	private JComboBox<String> liste_type;
-	
 	private JLabel label_prix;
-	private JTextField champ_prix;
-	
 	private JLabel label_RAM;
-	private JComboBox<Integer> liste_RAM;
-	
 	private JLabel label_typeDD;
-	private JComboBox<String> liste_typeDD;
-	
 	private JLabel label_CG;
-	private JComboBox<String> liste_CG;
-	
 	private JLabel label_CM;
-	private JComboBox<String> liste_CM;
-	
 	private JLabel label_id;
-	private JTextField champ_id;
-	
 	private JLabel label_nom;
+	
+	private JComboBox<String> liste_type;
+	private JTextField champ_prix;
+	private JComboBox<Integer> liste_RAM;
+	private JComboBox<String> liste_typeDD;
+	private JComboBox<String> liste_CG;
+	private JComboBox<String> liste_CM;
+	private JTextField champ_id;
 	private JTextField champ_nom;
 	
-	private String[] tab_critere= {"Nom","Type ordinateur","Prix","Mémoire RAM",
-			"Type Disque Dur","Carte Graphique","Carte mère", "Identifiant"};
+	private String[] tab_critere= {"Nom","Type ordinateur","Prix","Mï¿½moire RAM",
+			"Type Disque Dur","Carte Graphique","Carte mï¿½re", "Identifiant"};
 	
 	private ArrayList<JCheckBox> tab1=new ArrayList<JCheckBox>();
 	private ArrayList<JPanel> tab2=new ArrayList<JPanel>();
@@ -89,7 +79,7 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		cont = c;
 		
 		JPanel p_titre1=new JPanel();
-		label_critere=new JLabel("Choix des critères");
+		label_critere=new JLabel("Choix des critÃ¨res");
 		p_titre1.add(label_critere);
 			
 		JPanel p_ligne1=new JPanel();
@@ -175,7 +165,7 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 						
 		JPanel p2=new JPanel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
-		label_prix=new JLabel("Prix (en euros) :");
+		label_prix=new JLabel("Prix (en â‚¬) :");
 		champ_prix=new JTextField(10);
 		tab1.add(case_prix);
 		tab2.add(p2);
@@ -186,7 +176,7 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 					
 		JPanel p3=new JPanel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
-		label_RAM=new JLabel("Quantité de mémoire RAM (en Go) :");
+		label_RAM=new JLabel("QuantitÃ© de mÃ©moire RAM (en Go) :");
 		Integer[] liste_choixRAM= {2,4,8,16,32};
 		liste_RAM= new JComboBox<Integer>(liste_choixRAM);
 		liste_RAM.setLightWeightPopupEnabled (false);
@@ -200,7 +190,7 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		JPanel p4=new JPanel();
 		p4.setLayout(new BoxLayout(p4,BoxLayout.LINE_AXIS));
 		label_typeDD=new JLabel("Type de Disque Dur :");
-		String[] liste_choixDD= {"Mécanique","SSD"};
+		String[] liste_choixDD= {"MÃ©canique","SSD"};
 		liste_typeDD=new JComboBox<String>(liste_choixDD);
 		liste_typeDD.setLightWeightPopupEnabled (false);
 		tab1.add(case_typeDD);
@@ -225,7 +215,7 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 				
 		JPanel p6=new JPanel();
 		p6.setLayout(new BoxLayout(p6,BoxLayout.LINE_AXIS));
-		label_CM=new JLabel("Format de la carte mère :");
+		label_CM=new JLabel("Format de la carte mÃ¨re :");
 		String[] liste_choixCM= {"ATX_standard","micro_ATX","mini_ITX"};
 		liste_CM=new JComboBox<String>(liste_choixCM);
 		liste_CM.setLightWeightPopupEnabled (false);
@@ -344,21 +334,27 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		public void actionPerformed(ActionEvent arg0)
 		{
 			
-			//On supprime les espaces avant et après le nom
+			//On supprime les espaces avant et aprÃ¨s le nom
 			String str = champ_nom.getText();
 			String passageUn = str.replaceAll("\\s+$", "");
 		    String nom = passageUn.replaceAll("^\\s+", "");
 		    
-		    //On supprime tous les espaces du prix pour éviter une NUmberFormatException
+		    //On supprime tous les espaces du prix pour Ã©viter une NUmberFormatException
 		    str = champ_prix.getText();
 		    String prix = str.replaceAll("\\s", "");
+		    
 			try {
-					//On vérifie la validité du prix
+					
+					double p = Double.parseDouble(prix);
+					if ( (p <= 0) && (tab2.get(2).isVisible()) ) throw new ExceptionPrix();
+					if (tab2.get(0).isVisible() && nom.equals("")) throw new ExceptionNom();
+					
 					String query= "WHERE ";
 					String[] tab = {"nom = ", "type = ", "prix = ", "ram = ", "disque = ", "carte_g = ", "carte_m = ", "id = "};
+					
 					if (tab2.get(0).isVisible()) query += tab[0] + "\'" +nom +"\' AND ";
 					if (tab2.get(1).isVisible()) query += tab[1] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
-					if (tab2.get(2).isVisible()) query += tab[2] + "\'" + Double.parseDouble(prix) +"\' AND ";
+					if (tab2.get(2).isVisible()) query += tab[2] + "\'" + p +"\' AND ";
 					if (tab2.get(3).isVisible()) query += tab[3] + "\'" +liste_RAM.getSelectedItem() +"\' AND ";
 					if (tab2.get(4).isVisible()) query += tab[4] + "\'" +(String )liste_typeDD.getSelectedItem()+"\' AND ";
 					if (tab2.get(5).isVisible()) query += tab[5] + "\'" +(String )liste_CG.getSelectedItem()+"\' AND ";
@@ -368,13 +364,15 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 					String data = query.replaceAll(" AND $", "");
 					OrdiDAO_Admin dao = (OrdiDAO_Admin )cont.getOrdiDAO();
 					
-					if 	( (tab2.get(0).isVisible() && nom.equals("")) ||
-						(tab2.get(7).isVisible() && champ_id.getText().equals("")) ) {		//prix vide => NumberFormatException ,pas a check donc
+					if 	( (tab2.get(7).isVisible() && champ_id.getText().equals("")) ) {		//prix vide => NumberFormatException ,pas a check donc
+						
 						JOptionPane.showMessageDialog(	null, 
-														"Un champ choisi doit etre rempli.", 
-														"Erreur de saisie", 
+														"Le champ id doit etre rempli.", 
+														"Erreur de saisie d'identifiant", 
 														JOptionPane.ERROR_MESSAGE);
+						
 					} else {
+						
 						ArrayList<Ordinateur> ordiListe = dao.search(data);
 						System.out.println(data);
 						resultatRecherche = new Fenetre_resultat_admin(ordiListe, cont);
@@ -384,14 +382,21 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 				
 		    } catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(	null, 
-						"Le prix ne doit pas contenir de lettre", 
-						"Erreur de prix", 
-						JOptionPane.ERROR_MESSAGE);
+												"Le prix ne doit pas contenir de lettre ou d'espace", 
+												"Erreur de prix", 
+												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ExceptionPrix e) {
+				JOptionPane.showMessageDialog(	null, 
+												"Le champ prix doit contenir une valeur strictement positive.", 
+												"Erreur de prix", 
+												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ExceptionNom e) {
-				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(	null, 
+												"Le champ nom ne peut Ãªtre laissÃ© vide.", 
+												"Erreur de nom", 
+												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 		}	  

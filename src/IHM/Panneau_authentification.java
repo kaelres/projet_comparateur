@@ -120,7 +120,6 @@ public class Panneau_authentification extends JPanel
 				}
 				else {
 					Fenetre_client f_cri=new Fenetre_client();
-					f_cri.setVisible(true);
 					f_auth.dispose();
 				}
 				
