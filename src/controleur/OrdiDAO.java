@@ -9,7 +9,8 @@ import javax.swing.JOptionPane;
 
 import org.postgresql.util.PSQLException;
 
-import modele.ErreurPrix;
+import modele.ExceptionNom;
+import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 public class OrdiDAO {
@@ -47,8 +48,9 @@ public class OrdiDAO {
 											"Etat de l'opération", 
 											JOptionPane.INFORMATION_MESSAGE);
 			e.printStackTrace();
-		} catch (ErreurPrix e) {
-			// TODO Auto-generated catch block
+		} catch (ExceptionPrix e) {
+			e.printStackTrace();
+		} catch (ExceptionNom e) {
 			e.printStackTrace();
 		}
 		
