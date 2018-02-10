@@ -216,20 +216,14 @@ public class Panneau_admin_ajout extends JPanel
 			    str = champ_prix.getText();
 			    String prix = str.replaceAll("\\s", "");
 				
-				if (!nom.equals("")) {
-					double p = Double.parseDouble(prix);
-					Ordinateur ordi = new Ordinateur(p, (int )liste_RAM.getSelectedItem(), (String )liste_typeDD.getSelectedItem(),
+				double p = Double.parseDouble(prix);
+				Ordinateur ordi = new Ordinateur(p, (int )liste_RAM.getSelectedItem(), (String )liste_typeDD.getSelectedItem(),
 												(String )liste_type.getSelectedItem(), (String )liste_CG.getSelectedItem(),
 												(String )liste_CM.getSelectedItem(), nom, result.getInt(1)+1);
 				
-																				//On necessite d'être admin pour acceder à la fenetre, 
-					myDAO.add(ordi);											//on a donc accès au DAO admin	Le cas test donc sûr											
-				} else {
-					JOptionPane.showMessageDialog(	null, 
-												"Les champs prix et nom ne peuvent être vide.", 
-												"Erreur de prix et/ou de nom", 
-												JOptionPane.ERROR_MESSAGE);
-				}
+																				 
+				myDAO.add(ordi);
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (NumberFormatException e) {

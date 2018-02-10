@@ -58,7 +58,7 @@ public class Panneau_critere extends JPanel
 	private JComboBox<String> liste_CM;
 	
 	private JButton b_annuler;
-	private JButton b_ajouter;
+	private JButton b_rechercher;
 	
 	Panneau_critere(Fenetre_client f, Controleur c)
 	{
@@ -183,10 +183,10 @@ public class Panneau_critere extends JPanel
 		Panel p_boutons=new Panel();	
 		b_annuler= new JButton("Retour");
 		b_annuler.addActionListener(new BoutonAListener());
-		b_ajouter=new JButton("Rechercher");
-		b_ajouter.addActionListener(new BoutonRListener());
+		b_rechercher=new JButton("Rechercher");
+		b_rechercher.addActionListener(new BoutonRListener());
 		p_boutons.add(b_annuler);
-		p_boutons.add(b_ajouter);
+		p_boutons.add(b_rechercher);
 		conteneur.add(p_boutons,BorderLayout.SOUTH);
 		
 		add(conteneur);
