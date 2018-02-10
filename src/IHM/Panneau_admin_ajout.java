@@ -213,7 +213,7 @@ public class Panneau_admin_ajout extends JPanel
 				}
 				
 				int i = 1;
-				while (i < 32767 && !liste_id.isEmpty()) {
+				while (i < 32766 && !liste_id.isEmpty()) {
 					if(!liste_id.contains(i)) {
 						break;
 					}
@@ -235,7 +235,6 @@ public class Panneau_admin_ajout extends JPanel
 				if (p <= 0) throw new ExceptionPrix();
 				if (nom.equals("")) throw new ExceptionNom();
 				
-				System.out.println("id : "+i);
 				Ordinateur ordi = new Ordinateur(p, (int )liste_RAM.getSelectedItem(), (String )liste_typeDD.getSelectedItem(),
 												(String )liste_type.getSelectedItem(), (String )liste_CG.getSelectedItem(),
 												(String )liste_CM.getSelectedItem(), nom, i);

@@ -65,8 +65,8 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 	private JTextField champ_id;
 	private JTextField champ_nom;
 	
-	private String[] tab_critere= {"Nom","Type ordinateur","Prix","M�moire RAM",
-			"Type Disque Dur","Carte Graphique","Carte m�re", "Identifiant"};
+	private String[] tab_critere= {"Nom","Type ordinateur","Prix","Mémoire RAM",
+			"Type Disque Dur","Carte Graphique","Carte mère", "Identifiant"};
 	
 	private ArrayList<JCheckBox> tab1=new ArrayList<JCheckBox>();
 	private ArrayList<JPanel> tab2=new ArrayList<JPanel>();
@@ -345,16 +345,19 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		    
 			try {
 					
-					double p = Double.parseDouble(prix);
-					if ( (p <= 0) && (tab2.get(2).isVisible()) ) throw new ExceptionPrix();
-					if (tab2.get(0).isVisible() && nom.equals("")) throw new ExceptionNom();
-					
 					String query= "WHERE ";
 					String[] tab = {"nom = ", "type = ", "prix = ", "ram = ", "disque = ", "carte_g = ", "carte_m = ", "id = "};
 					
-					if (tab2.get(0).isVisible()) query += tab[0] + "\'" +nom +"\' AND ";
+					if (tab2.get(0).isVisible()) {
+						if ( nom.equals("") ) throw new ExceptionNom();
+						query += tab[0] + "\'" +nom +"\' AND ";
+					}
 					if (tab2.get(1).isVisible()) query += tab[1] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
-					if (tab2.get(2).isVisible()) query += tab[2] + "\'" + p +"\' AND ";
+					if (tab2.get(2).isVisible()) {
+						double p = Double.parseDouble(prix);
+						if (p <= 0) throw new ExceptionPrix();
+						query += tab[2] + "\'" + p +"\' AND ";
+					}
 					if (tab2.get(3).isVisible()) query += tab[3] + "\'" +liste_RAM.getSelectedItem() +"\' AND ";
 					if (tab2.get(4).isVisible()) query += tab[4] + "\'" +(String )liste_typeDD.getSelectedItem()+"\' AND ";
 					if (tab2.get(5).isVisible()) query += tab[5] + "\'" +(String )liste_CG.getSelectedItem()+"\' AND ";
@@ -374,7 +377,6 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 					} else {
 						
 						ArrayList<Ordinateur> ordiListe = dao.search(data);
-						System.out.println(data);
 						resultatRecherche = new Fenetre_resultat_admin(ordiListe, cont);
 					}
 					
