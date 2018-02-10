@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import controleur.Controleur;
 import controleur.MaConnexion;
 import controleur.OrdiDAO_Admin;
+import modele.ExceptionNom;
+import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 @SuppressWarnings("serial")
@@ -352,7 +354,7 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 		    String prix = str.replaceAll("\\s", "");
 			try {
 					//On vérifie la validité du prix
-					String query= "";
+					String query= "WHERE ";
 					String[] tab = {"type = ", "prix = ", "ram = ", "disque = ", "carte_G = ", "carte_M = ", "id = ", "nom = "};
 					if (tab2.get(0).isVisible()) query += tab[0] + "\'" +(String )liste_type.getSelectedItem()+"\' AND ";
 					if (tab2.get(1).isVisible()) query += tab[1] + "\'" + Double.parseDouble(prix) +"\' AND ";
@@ -384,6 +386,11 @@ public class Panneau_admin_modifier_supprimer extends JPanel
 						"Le prix ne doit pas contenir de lettre", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} catch (ExceptionPrix e) {
+				e.printStackTrace();
+			} catch (ExceptionNom e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}	  

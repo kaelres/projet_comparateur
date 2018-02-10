@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import org.postgresql.util.PSQLException;
 
+import modele.ErreurPrix;
 import modele.Ordinateur;
 
 public class OrdiDAO {
@@ -18,7 +19,7 @@ public class OrdiDAO {
 	public ArrayList<Ordinateur> search(String data) {
 
 		ArrayList<Ordinateur> array = new ArrayList<>();
-		String query = "SELECT * FROM \"Ordinateur\" WHERE ";
+		String query = "SELECT * FROM \"Ordinateur\" ";
 		query += data;
 		
 		
@@ -45,6 +46,9 @@ public class OrdiDAO {
 											"Erreur SQL", 
 											"Etat de l'opération", 
 											JOptionPane.INFORMATION_MESSAGE);
+			e.printStackTrace();
+		} catch (ErreurPrix e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
