@@ -19,7 +19,7 @@ public class Fenetre_admin extends JFrame
 	Fenetre_admin () throws PSQLException, SQLException
 	{
 		super();
-		this.setTitle("Accès à la Base de données");
+		this.setTitle("AccÃ¨s Ã  la Base de donnÃ©es");
 		Toolkit tk=Toolkit.getDefaultToolkit();
 		Dimension dim=tk.getScreenSize();
 		int largeur=dim.width;

@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import controleur.Controleur;
-import modele.ExceptionNom;
-import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 @SuppressWarnings("serial")
@@ -17,7 +15,7 @@ public class Fenetre_resultat_admin extends JFrame {
 	
 	Panneau_resultat_admin panneau;
 	
-	public Fenetre_resultat_admin(ArrayList<Ordinateur> ordiListe, Controleur C) throws ExceptionPrix, ExceptionNom {
+	public Fenetre_resultat_admin(ArrayList<Ordinateur> ordiListe, Controleur C) {
 		super();
 		this.setTitle("Resultats de recherche");
 		Toolkit tk=Toolkit.getDefaultToolkit();

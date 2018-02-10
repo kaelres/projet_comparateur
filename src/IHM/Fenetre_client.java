@@ -2,16 +2,20 @@ package IHM;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+
+import org.postgresql.util.PSQLException;
+
 import controleur.Controleur;
 
 @SuppressWarnings("serial")
 public class Fenetre_client extends JFrame
 {
 	private Panneau_client panneau;
-	Fenetre_client ()
+	Fenetre_client () throws PSQLException, SQLException
 	{
 		super();
 		this.setTitle("Choix des critères");
@@ -27,5 +31,6 @@ public class Fenetre_client extends JFrame
 		JScrollPane scrollPane = new JScrollPane(panneau);
 		add(scrollPane);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 }

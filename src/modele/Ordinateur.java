@@ -1,10 +1,5 @@
 package modele;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import IHM.Fenetre_resultat;
-
 public class Ordinateur {
 
 	private double prix;
@@ -19,25 +14,20 @@ public class Ordinateur {
 	private double score;
 	
 	public Ordinateur(double p, int r, String d, String t, 
-					  String g, String m, String n, int i) throws ExceptionPrix, ExceptionNom {
-		if (p <= 0) throw new ExceptionPrix();
-		if (n.equals("")) throw new ExceptionNom();
-		setPrix(p);
-		setRAM(r);
-		setDisque(d);
-		setType(t);
-		setCg(g);
-		setCm(m);
-		setNom(n);
-		setId(i);
-		setScore(0);
+					  String g, String m, String n, int i) {
+		prix = p;
+		ram = r;
+		disque = d;
+		type = t;
+		cg = g;
+		cm = m;
+		nom = n;
+		id = i;
+		score = 0;
 	}
 	
 	public double getPrix() { return prix;}
-	public void setPrix(double prix) throws ExceptionPrix { 
-		if (prix <= 0) throw new ExceptionPrix();
-		this.prix = prix;
-		}
+	public void setPrix(double prix) { this.prix = prix;}
 
 	public int getRAM() { return ram;}
 	public void setRAM(int rAM) { ram = rAM;}
@@ -55,71 +45,11 @@ public class Ordinateur {
 	public void setCg(String cg) { this.cg = cg;}
 
 	public String getNom() { return nom;}
-	public void setNom(String nom) throws ExceptionNom { 
-		if (nom .equals("")) throw new ExceptionNom();
-		this.nom = nom;
-		}
+	public void setNom(String nom) { this.nom = nom;}
 	
 	public int getId() { return id;}
 	public void setId(int i) { id = i;}
 
 	public double getScore() { return score;}
 	public void setScore(double score) { this.score = score;}
-	
-	public static void main(String[] args) {
-		
-		try {
-			ArrayList<Ordinateur> a = new ArrayList<>();
-			Ordinateur souhait = new Ordinateur(10.0, 2, "Mécanique", "Portable", "ASUS", "mini_ITX", "1a6", 4);
-			
-			Ordinateur o1 = new Ordinateur(40.0, 8, "Mécanique", "Fixe", "ASUS", "mini_ITX", "bleh", 3);
-			Ordinateur o2 = new Ordinateur(100.0, 16, "SSD", "Fixe", "ASUS", "mini_ITX", "zbeub", 2);
-			Ordinateur o3 = new Ordinateur(10.0, 2, "Mécanique", "Portable", "ASUS", "mini_ITX", "ha", 4);
-			Ordinateur o4 = new Ordinateur(350.0, 32,"SSD", "Fixe", "MSI", "ATX_standard", "doh!", 1);
-			a.add(o1); a.add(o2); a.add(o3); a.add(o4);
-			
-			JugeGaming juge2 = new JugeGaming(souhait);
-			
-			Class<?> unjuge = Class.forName("modele.JugeBureautique");
-			Constructor<?> ctr = unjuge.getConstructor(Ordinateur.class);
-			Object obj = ctr.newInstance(new Object[] {souhait});
-			Juge juge = (Juge)obj;
-			
-			for (Ordinateur o : a) juge.juger(o);
-			a.sort(new ComparateurOrdi());
-			new Fenetre_resultat(a);
-			
-			for (Ordinateur o : a) juge2.juger(o);
-			a.sort(new ComparateurOrdi());
-			new Fenetre_resultat(a);	
-			
-		} catch (ClassNotFoundException e) {
-			
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			
-			e.printStackTrace();
-		} catch (ExceptionPrix e) {
-			
-			e.printStackTrace();
-		} catch (ExceptionNom e) {
-			
-			e.printStackTrace();
-		}
-	}
 }

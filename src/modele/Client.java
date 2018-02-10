@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.ArrayList;
+
 import controleur.MaConnexion;
 
 public class Client {
@@ -8,6 +10,7 @@ public class Client {
 	private String prenom;
 	private String mail;
 	private String login;
+	private ArrayList<Reservation> resas;
 	
 	public Client(String n, String p, String m) {
 		login = MaConnexion.getUsr();
@@ -27,4 +30,7 @@ public class Client {
 
 	public String getLogin() { return login;}
 	public void setLogin(String login) { this.login = login;}
+
+	public ArrayList<Reservation> getResas() { return resas;}
+	public void setResas(ArrayList<Reservation> resas) { this.resas = resas;}
 }

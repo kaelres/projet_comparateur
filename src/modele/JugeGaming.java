@@ -15,15 +15,15 @@ public class JugeGaming implements Juge {
 	public JugeGaming (Ordinateur o) {
 		setSouhait(o);
 		
-		ArrayList<String> famille_Mécanique = new ArrayList<>();
-		famille_Mécanique.add("SSD");
+		ArrayList<String> famille_MÃ©canique = new ArrayList<>();
+		famille_MÃ©canique.add("SSD");
 		ArrayList<String> famille_SSD = new ArrayList<>(); // vide
 		disque = new TreeMap<>();
-		disque.put("Mécanique", famille_Mécanique); disque.put("SSD", famille_SSD);
+		disque.put("MÃ©canique", famille_MÃ©canique); disque.put("SSD", famille_SSD);
 		
-		ArrayList<String> famille_Fixe = new ArrayList<>(); //vide
+		ArrayList<String> famille_Fixe = new ArrayList<>();
+		famille_Fixe.add("Portable");
 		ArrayList<String> famille_Portable = new ArrayList<>();
-		famille_Portable.add("Fixe");
 		type = new TreeMap<>();
 		type.put("Fixe", famille_Fixe); type.put("Portable", famille_Portable);
 		
@@ -65,7 +65,7 @@ public class JugeGaming implements Juge {
 		if (souhait.getDisque().equals(o.getDisque())) score += 20;
 		else if (disque.get(souhait.getDisque()).contains(o.getDisque())) score += 15;
 		else score += -5;
-		//un mécanique est un malus par rapport à un ssd
+		//un mï¿½canique est un malus par rapport ï¿½ un ssd
 		
 		
 		//type
@@ -84,7 +84,6 @@ public class JugeGaming implements Juge {
 		
 		//conclusion
 		o.setScore(score);
-		System.out.println("Gaming => "+o.getNom()+" - "+o.getScore());
 	}
 
 }

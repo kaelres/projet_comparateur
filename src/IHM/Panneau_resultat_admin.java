@@ -19,8 +19,6 @@ import javax.swing.JTextField;
 
 import controleur.Controleur;
 import controleur.OrdiDAO_Admin;
-import modele.ExceptionNom;
-import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 @SuppressWarnings("serial")
@@ -69,14 +67,12 @@ public class Panneau_resultat_admin extends JPanel {
 	private Controleur cont;
 	OrdiDAO_Admin dao;
 	
-	public Panneau_resultat_admin(Fenetre_resultat_admin f, ArrayList<Ordinateur> ordiListe, Controleur C) throws ExceptionPrix, ExceptionNom {
+	public Panneau_resultat_admin(Fenetre_resultat_admin f, ArrayList<Ordinateur> ordiListe, Controleur C) {
 		
 		f_res = f;
 		liste = ordiListe;
 		itePrevious = liste.listIterator();
 		iteNext = liste.listIterator();
-		if (iteNext.hasNext()) courant = iteNext.next();
-		else courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
 		cont = C;
 		dao = (OrdiDAO_Admin )cont.getOrdiDAO();
 		
@@ -95,10 +91,12 @@ public class Panneau_resultat_admin extends JPanel {
 		p_boutonBas.add(b_modifier);
 		p_boutonBas.add(b_supprimer);
 		
-		b_precedant = new JButton("Précédent");
+		b_precedant = new JButton("PrÃ©cÃ©dent");
 		b_precedant.addActionListener(new BoutonListenerPrecedant());
+		b_precedant.setEnabled(false);
 		b_suivant = new JButton("Suivant");
 		b_suivant.addActionListener(new BoutonListenerSuivant());
+		b_suivant.setEnabled(false);
 		
 		JPanel p_boutonHaut = new JPanel();
 		p_boutonHaut.add(b_precedant);
@@ -114,14 +112,18 @@ public class Panneau_resultat_admin extends JPanel {
 		
 		//CENTER
 		
-		enTete = new JTextArea("Aucun résultat n'a été trouvé");
-		if (!liste.isEmpty()) {
-			enTete.setText("Vous trouverez ci-dessous les ordinateurs trouvés.\n"
-								+ "Leurs caractéristiques sont visibles ci-dessous et modifiables.\n"
-								+ "La première ligne de boutons permet de naviguer.\n"
-								+ "La seconde d'agir sur l'Ordinateur ou de quitter.");
-			
+		enTete = new JTextArea("Aucun rÃ©sultat n'a Ã©tÃ© trouvÃ©");
+		if (iteNext.hasNext()) {
+			courant = iteNext.next();
+			enTete.setText("Vous trouverez ci-dessous les ordinateurs trouvÃ©s.\n"
+							+ "Leurs caractÃ©ristiques sont visibles ci-dessous et modifiables.\n"
+							+ "La premiÃ¨re ligne de boutons permet de naviguer.\n"
+							+ "La seconde d'agir sur l'Ordinateur ou de quitter.");
+			if (iteNext.hasNext()) b_suivant.setEnabled(true);
 		}
+		else 
+			courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur dans la liste", -1);
+
 		enTete.setOpaque(false);
 		enTete.setEditable(false);
 		
@@ -147,7 +149,7 @@ public class Panneau_resultat_admin extends JPanel {
 					
 		JPanel p3=new JPanel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
-		label_RAM=new JLabel("Quantité de mémoire RAM (en Go) :");
+		label_RAM=new JLabel("QuantitÃ© de mÃ©moire RAM (en Go) :");
 		Integer[] liste_choixRAM= {2,4,8,16,32};
 		liste_RAM= new JComboBox<Integer>(liste_choixRAM);
 		liste_RAM.setLightWeightPopupEnabled (false);
@@ -159,7 +161,7 @@ public class Panneau_resultat_admin extends JPanel {
 		JPanel p4=new JPanel();
 		p4.setLayout(new BoxLayout(p4,BoxLayout.LINE_AXIS));
 		label_typeDD=new JLabel("Type de Disque Dur :");
-		String[] liste_choixDD= {"Mécanique","SSD"};
+		String[] liste_choixDD= {"MÃ©canique","SSD"};
 		liste_typeDD=new JComboBox<String>(liste_choixDD);
 		liste_typeDD.setLightWeightPopupEnabled (false);
 			
@@ -180,7 +182,7 @@ public class Panneau_resultat_admin extends JPanel {
 				
 		JPanel p6=new JPanel();
 		p6.setLayout(new BoxLayout(p6,BoxLayout.LINE_AXIS));
-		label_CM=new JLabel("Format de la carte mère :");
+		label_CM=new JLabel("Format de la carte mÃ¨re :");
 		String[] liste_choixCM= {"ATX_standard","micro_ATX","mini_ITX"};
 		liste_CM=new JComboBox<String>(liste_choixCM);
 		liste_CM.setLightWeightPopupEnabled (false);
@@ -269,30 +271,35 @@ public class Panneau_resultat_admin extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
-			//On supprime les espaces avant et après le nom
+			//On supprime les espaces avant et aprï¿½s le nom
 			String str = champ_nom.getText();
 			String passageUn = str.replaceAll("\\s+$", "");
 			String nom = passageUn.replaceAll("^\\s+", ""); 
 		    
-		    //On supprime tous les espaces du prix pour éviter une NUmberFormatException
+		    //On supprime tous les espaces du prix pour ï¿½viter une NUmberFormatException
 		    str = champ_prix.getText();
 		    String prixStr = str.replaceAll("\\s", "");
 		    try {
 		    		double prix = Double.parseDouble(prixStr);
+		    		
+		    		if (prix <= 0) throw new ExceptionPrix();
+		    		if (nom.equals("")) throw new ExceptionNom();
+		    		
 					int ram = (int )liste_RAM.getSelectedItem();
 					String disque = (String )liste_typeDD.getSelectedItem();
 					String type = (String )liste_type.getSelectedItem();
 					String cg = (String )liste_CG.getSelectedItem();
 					String cm = (String )liste_CM.getSelectedItem();
-					//nom
 					int id = courant.getId();
 				
 					Ordinateur o = new Ordinateur (prix, ram, disque, type, cg, cm, nom, id);
 					dao.update(o);
+					
 					int index = liste.indexOf(courant);
 					liste.set(index, o);
 					courant = o;
-					maj_ihm();		    
+					maj_ihm();
+					
 		    } catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(	null, 
 						"Le prix ne doit pas contenir de lettre", 
@@ -301,13 +308,13 @@ public class Panneau_resultat_admin extends JPanel {
 				e.printStackTrace();
 			} catch (ExceptionPrix e) {
 				JOptionPane.showMessageDialog(	null, 
-												"Le prix doit être positif et celui-ci doit obligatoirement être renseigné.", 
+												"Le prix doit Ãªtre positif et celui-ci doit obligatoirement ï¿½tre renseignï¿½.", 
 												"Erreur de prix", 
 												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ExceptionNom e) {
 				JOptionPane.showMessageDialog(	null, 
-												"Le champ nom ne peut être laissé vide.", 
+												"Le champ nom ne peut Ãªtre laissÃ© vide.", 
 												"Erreur de nom", 
 												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
@@ -321,48 +328,54 @@ public class Panneau_resultat_admin extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			
+			//suppression en BDD
 			dao.remove(courant);
+			//supression de la liste
 			if (avancerAuDernier) iteNext.remove();
 			else itePrevious.remove();
+			
+			//remise du curseur en dÃ©but de liste
 			itePrevious = liste.listIterator();
 			iteNext = liste.listIterator();
+			b_precedant.setEnabled(false);
+			
 			if (iteNext.hasNext()) {
 				courant = iteNext.next();
 				maj_ihm();
+				b_suivant.setEnabled(true);
 			}
-			else {//plus aucun element
-				enTete.setText("Aucun résultat restant");
-				try {
-					courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
-				} catch (ExceptionPrix e) {
-					e.printStackTrace();
-				} catch (ExceptionNom e) {
-					e.printStackTrace();
-				}
+			else {			//plus aucun element
+				enTete.setText("Aucun rÃ©sultat restant");
+				courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
 				maj_ihm();
+				b_suivant.setEnabled(false);
 			}
 		}
 		
 	}
 	
 	
-	//On encadre le courant avec un iterateur avant et après
+	//On encadre le courant avec un iterateur avant et aprÃ¨s
 	//Un se charge des precedances et l'auvre des elements qui suivent
 	class BoutonListenerPrecedant implements ActionListener {
 
 		@Override
-		//itePrevious est toujours un pas avant ou au même endroit que iteNext, inutile de check next donc
 		public void actionPerformed(ActionEvent arg0) {
 			if (itePrevious.hasPrevious()) {
+				
+				//affichage du prÃ©cÃ©dant
 				iteNext.previous();
 				courant = itePrevious.previous();				
 				maj_ihm();
+				
+				//mise Ã  jour de l'Ã©tat des boutons
+				b_suivant.setEnabled(true);
+				if (!itePrevious.hasPrevious()) b_precedant.setEnabled(false);
+				
+				//mise Ã  jour du booleen utile Ã  la suppression
 				avancerAuDernier = false;
-			} else {
-				JOptionPane.showMessageDialog(	f_res, 
-												"Il n'y a pas de précedant dans la liste de résultats.", 
-												"Erreur", 
-												JOptionPane.ERROR_MESSAGE);
+				
 			}
 		}
 		
@@ -371,19 +384,23 @@ public class Panneau_resultat_admin extends JPanel {
 	class BoutonListenerSuivant implements ActionListener {
 
 		@Override
-		//iteNext est toujours un pas plus loin ou au même endroit que itePrevious, inutile de check previous donc
 		public void actionPerformed(ActionEvent arg0) {
 			if (iteNext.hasNext()) {
+				
+				//affichage du suivant
 				itePrevious.next();
 				courant = iteNext.next();
 				maj_ihm();
+				
+
+				//mise Ã  jour de l'Ã©tat des boutons
+				b_precedant.setEnabled(true);
+				if (!iteNext.hasNext()) b_suivant.setEnabled(false);
+				
+				//mise Ã  jour du booleen utile Ã  la suppression
 				avancerAuDernier = true;
-			} else {
-				JOptionPane.showMessageDialog(	f_res, 
-												"Il n'y a pas de suivant dans la liste de résultats.", 
-												"Erreur", 
-												JOptionPane.ERROR_MESSAGE);
-}
+				
+			}
 		}
 		
 	}

@@ -11,10 +11,14 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import controleur.Controleur;
+import controleur.ReservationDAO;
+import modele.Client;
 import modele.Ordinateur;
+import modele.Reservation;
 
 @SuppressWarnings("serial")
 public class Panneau_resultat extends JPanel {
@@ -57,26 +61,26 @@ public class Panneau_resultat extends JPanel {
 	private ListIterator<Ordinateur> itePrevious;
 	private ListIterator<Ordinateur> iteNext;
 	
-	//private Controleur cont;
-	//OrdiDAO_Admin dao;
+	private Controleur cont;
+	private Client client;
 	
-	public Panneau_resultat(Fenetre_resultat f, ArrayList<Ordinateur> ordiListe) {
+	public Panneau_resultat(Fenetre_resultat f, ArrayList<Ordinateur> ordiListe, Client cl, Controleur co) {
 		
 		f_res = f;
 		liste = ordiListe;
 		itePrevious = liste.listIterator();
 		iteNext = liste.listIterator();
-		if (iteNext.hasNext()) courant = iteNext.next();
-		//cont = C;
-		//dao = (OrdiDAO_Admin )cont.getOrdiDAO();
+		cont = co;
+		client = cl;
 		
 		JPanel conteneur = new JPanel (new BorderLayout());
 		
-		//boutons en SOUTH
+		//boutons
 		b_quitter = new JButton("Quitter");
 		b_quitter.addActionListener(new BoutonListenerQuitter());
-		b_reserver = new JButton("Rechercher");
+		b_reserver = new JButton("Reserver");
 		b_reserver.addActionListener(new BoutonListenerReserver());
+		b_reserver.setEnabled(false);
 		
 		JPanel p_boutonBas = new JPanel();
 		p_boutonBas.add(b_quitter);
@@ -84,8 +88,10 @@ public class Panneau_resultat extends JPanel {
 		
 		b_precedant = new JButton("Precedant");
 		b_precedant.addActionListener(new BoutonListenerPrecedant());
+		b_precedant.setEnabled(false);
 		b_suivant = new JButton("Suivant");
 		b_suivant.addActionListener(new BoutonListenerSuivant());
+		b_suivant.setEnabled(false);
 		
 		JPanel p_boutonHaut = new JPanel();
 		p_boutonHaut.add(b_precedant);
@@ -99,11 +105,21 @@ public class Panneau_resultat extends JPanel {
 		ButtonWrapper.add(p_boutonBas);
 		conteneur.add(ButtonWrapper, BorderLayout.SOUTH);
 		
-		//CENTER
+		//CritÃ¨res
 		
-		enTete = new JTextArea("Aucun résultat n'a été trouvé");
+		enTete = new JTextArea("Aucun rÃ©sultat n'a Ã©tÃ© trouvÃ©");
 		enTete.setOpaque(false);
 		enTete.setEditable(false);
+		
+		if (iteNext.hasNext()) {
+			courant = iteNext.next();
+			enTete.setText("Vous trouverez ci-dessous les ordinateurs trouvÃ©s.\n"
+							+ "La premiÃ¨re ligne de boutons permet de naviguer.\n");
+			b_reserver.setEnabled(true);
+			if (iteNext.hasNext()) b_suivant.setEnabled(true);
+		} else 
+			courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur dans la liste", -1);
+		
 		
 		JPanel p1 = new JPanel();
 		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
@@ -118,7 +134,7 @@ public class Panneau_resultat extends JPanel {
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
 		label_prix = new JLabel("Prix (en euros) :");
 		field_prix = new JLabel();
-		//indiquer la taille si ça fonctionne pas sans ?
+		//indiquer la taille si Ã§a fonctionne pas sans ?
 		
 		p2.add(label_prix);
 		p2.add(Box.createRigidArea(new Dimension(20,0)));
@@ -126,7 +142,7 @@ public class Panneau_resultat extends JPanel {
 					
 		JPanel p3 = new JPanel();
 		p3.setLayout(new BoxLayout(p3,BoxLayout.LINE_AXIS));
-		label_RAM = new JLabel("Quantité de mémoire RAM (en Go) :");
+		label_RAM = new JLabel("QuantitÃ© de mÃ©moire RAM (en Go) :");
 		field_RAM = new JLabel();
 				
 		p3.add(label_RAM);
@@ -153,7 +169,7 @@ public class Panneau_resultat extends JPanel {
 				
 		JPanel p6 = new JPanel();
 		p6.setLayout(new BoxLayout(p6,BoxLayout.LINE_AXIS));
-		label_CM = new JLabel("Format de la carte mère :");
+		label_CM = new JLabel("Format de la carte mÃ¨re :");
 		field_CM = new JLabel();
 		
 		p6.add(label_CM);
@@ -178,12 +194,7 @@ public class Panneau_resultat extends JPanel {
 		p8.add(Box.createRigidArea(new Dimension(20,0)));
 		p8.add(field_nom);
 		
-		
-		if (liste.size() != 0) {
-			enTete.setText("Vous trouverez ci-dessous les ordinateurs trouvés.\n"
-								+ "La première ligne de boutons permet de naviguer.\n");
-			maj_ihm();
-		}
+		maj_ihm();
 		
 		JPanel p_formu=new JPanel();
 		p_formu.setLayout(new BoxLayout(p_formu, BoxLayout.PAGE_AXIS));
@@ -211,7 +222,7 @@ public class Panneau_resultat extends JPanel {
 	}
 
 	
-	public void maj_ihm() {
+	private void maj_ihm() {
 		
 		Ordinateur o = courant;
 		
@@ -237,27 +248,32 @@ public class Panneau_resultat extends JPanel {
 	class BoutonListenerReserver implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {}
+		public void actionPerformed(ActionEvent arg0) {
+			Reservation r = new Reservation(client.getLogin(), courant.getId());
+			ReservationDAO dao = cont.getReservationDAO();
+			dao.add(r);
+		}
 		
 	}
 	
 	
-	//On encadre le courant avec un iterateur avant et après
+	//On encadre le courant avec un iterateur avant et aprÃ¨s
 	//Un se charge des precedances et l'auvre des elements qui suivent
 	class BoutonListenerPrecedant implements ActionListener {
 
 		@Override
-		//itePrevious est toujours un pas avant ou au même endroit que iteNext, inutile de check next donc
+		//itePrevious est toujours un pas avant ou au mÃªme endroit que iteNext, inutile de check next donc
 		public void actionPerformed(ActionEvent arg0) {
 			if (itePrevious.hasPrevious()) {
+				
+				//affichage du prÃ©cÃ©dant
 				iteNext.previous();
 				courant = itePrevious.previous();				
 				maj_ihm();
-			} else {
-				JOptionPane.showMessageDialog(	f_res, 
-												"Il n'y a pas de précedant dans la liste de résultats.", 
-												"Erreur", 
-												JOptionPane.ERROR_MESSAGE);
+
+				//mise Ã  jour de l'Ã©tat des boutons
+				b_suivant.setEnabled(true);
+				if (!itePrevious.hasPrevious()) b_precedant.setEnabled(false);
 			}
 		}
 		
@@ -266,18 +282,19 @@ public class Panneau_resultat extends JPanel {
 	class BoutonListenerSuivant implements ActionListener {
 
 		@Override
-		//iteNext est toujours un pas plus loin ou au même endroit que itePrevious, inutile de check previous donc
+		//iteNext est toujours un pas plus loin ou au mÃªme endroit que itePrevious, inutile de check previous donc
 		public void actionPerformed(ActionEvent arg0) {
 			if (iteNext.hasNext()) {
+				
+				//affichage du suivant
 				itePrevious.next();
 				courant = iteNext.next();
 				maj_ihm();
-			} else {
-				JOptionPane.showMessageDialog(	f_res, 
-												"Il n'y a pas de suivant dans la liste de résultats.", 
-												"Erreur", 
-												JOptionPane.ERROR_MESSAGE);
-}
+				
+				//mise Ã  jour de l'Ã©tat des boutons
+				b_precedant.setEnabled(true);
+				if (!iteNext.hasNext()) b_suivant.setEnabled(false);
+			}
 		}
 		
 	}

@@ -41,7 +41,7 @@ public class OrdiDAO_Admin extends OrdiDAO{
 		} finally {
 			JOptionPane.showMessageDialog(	null, 
 					str, 
-					"Etat de l'opération", 
+					"Etat de l'opÃ©ration", 
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
@@ -65,7 +65,7 @@ public class OrdiDAO_Admin extends OrdiDAO{
 		} finally {
 			JOptionPane.showMessageDialog(	null, 
 					str, 
-					"Etat de l'opération", 
+					"Etat de l'opÃ©ration", 
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
@@ -100,7 +100,7 @@ public class OrdiDAO_Admin extends OrdiDAO{
 		} finally {
 			JOptionPane.showMessageDialog(	null, 
 					str, 
-					"Etat de l'opération", 
+					"Etat de l'opÃ©ration", 
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}

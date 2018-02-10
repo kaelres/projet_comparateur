@@ -9,8 +9,6 @@ import javax.swing.JOptionPane;
 
 import org.postgresql.util.PSQLException;
 
-import modele.ExceptionNom;
-import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 public class OrdiDAO {
@@ -36,21 +34,16 @@ public class OrdiDAO {
 			}
 			
 		} catch (PSQLException e) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(	null, 
 											"Erreur PSQL", 
-											"Etat de l'opération", 
+											"Etat de l'opÃ©ration", 
 											JOptionPane.INFORMATION_MESSAGE);
 			e.printStackTrace();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(	null, 
 											"Erreur SQL", 
-											"Etat de l'opération", 
+											"Etat de l'opÃ©ration", 
 											JOptionPane.INFORMATION_MESSAGE);
-			e.printStackTrace();
-		} catch (ExceptionPrix e) {
-			e.printStackTrace();
-		} catch (ExceptionNom e) {
 			e.printStackTrace();
 		}
 		
