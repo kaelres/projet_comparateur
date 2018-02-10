@@ -76,7 +76,7 @@ public class Panneau_resultat_admin extends JPanel {
 		itePrevious = liste.listIterator();
 		iteNext = liste.listIterator();
 		if (iteNext.hasNext()) courant = iteNext.next();
-		else courant = new Ordinateur (0, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
+		else courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
 		cont = C;
 		dao = (OrdiDAO_Admin )cont.getOrdiDAO();
 		
