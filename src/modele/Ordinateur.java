@@ -34,7 +34,10 @@ public class Ordinateur {
 	}
 	
 	public double getPrix() { return prix;}
-	public void setPrix(double prix) { this.prix = prix;}
+	public void setPrix(double prix) throws ExceptionPrix { 
+		if (prix <= 0) throw new ExceptionPrix();
+		this.prix = prix;
+		}
 
 	public int getRAM() { return ram;}
 	public void setRAM(int rAM) { ram = rAM;}
@@ -52,7 +55,10 @@ public class Ordinateur {
 	public void setCg(String cg) { this.cg = cg;}
 
 	public String getNom() { return nom;}
-	public void setNom(String nom) { this.nom = nom;}
+	public void setNom(String nom) throws ExceptionNom { 
+		if (nom .equals("")) throw new ExceptionNom();
+		this.nom = nom;
+		}
 	
 	public int getId() { return id;}
 	public void setId(int i) { id = i;}
@@ -88,31 +94,31 @@ public class Ordinateur {
 			new Fenetre_resultat(a);	
 			
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (ExceptionPrix e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (ExceptionNom e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
