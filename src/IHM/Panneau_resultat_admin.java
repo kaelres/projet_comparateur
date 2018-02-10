@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 
 import controleur.Controleur;
 import controleur.OrdiDAO_Admin;
+import modele.ExceptionNom;
+import modele.ExceptionPrix;
 import modele.Ordinateur;
 
 @SuppressWarnings("serial")
@@ -67,14 +69,14 @@ public class Panneau_resultat_admin extends JPanel {
 	private Controleur cont;
 	OrdiDAO_Admin dao;
 	
-	public Panneau_resultat_admin(Fenetre_resultat_admin f, ArrayList<Ordinateur> ordiListe, Controleur C) {
+	public Panneau_resultat_admin(Fenetre_resultat_admin f, ArrayList<Ordinateur> ordiListe, Controleur C) throws ExceptionPrix, ExceptionNom {
 		
 		f_res = f;
 		liste = ordiListe;
 		itePrevious = liste.listIterator();
 		iteNext = liste.listIterator();
 		if (iteNext.hasNext()) courant = iteNext.next();
-		else courant = new Ordinateur (0, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
+		else courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
 		cont = C;
 		dao = (OrdiDAO_Admin )cont.getOrdiDAO();
 		
@@ -276,7 +278,6 @@ public class Panneau_resultat_admin extends JPanel {
 		    str = champ_prix.getText();
 		    String prixStr = str.replaceAll("\\s", "");
 		    try {
-		    	if (!nom.equals("") && !prixStr.equals("")) {
 		    		double prix = Double.parseDouble(prixStr);
 					int ram = (int )liste_RAM.getSelectedItem();
 					String disque = (String )liste_typeDD.getSelectedItem();
@@ -291,21 +292,24 @@ public class Panneau_resultat_admin extends JPanel {
 					int index = liste.indexOf(courant);
 					liste.set(index, o);
 					courant = o;
-					maj_ihm();
-					
-					
-		    	} else {
-		    		JOptionPane.showMessageDialog(	null, 
-							"Les champs prix et nom ne peuvent être vide.", 
-							"Erreur de prix et/ou de nom", 
-							JOptionPane.ERROR_MESSAGE);
-		    	}
-		    
+					maj_ihm();		    
 		    } catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(	null, 
-						"Le pric ne doit pas contenir de lettre", 
+						"Le prix ne doit pas contenir de lettre", 
 						"Erreur de prix", 
 						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} catch (ExceptionPrix e) {
+				JOptionPane.showMessageDialog(	null, 
+												"Le prix doit être positif et celui-ci doit obligatoirement être renseigné.", 
+												"Erreur de prix", 
+												JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} catch (ExceptionNom e) {
+				JOptionPane.showMessageDialog(	null, 
+												"Le champ nom ne peut être laissé vide.", 
+												"Erreur de nom", 
+												JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 			
@@ -328,7 +332,13 @@ public class Panneau_resultat_admin extends JPanel {
 			}
 			else {//plus aucun element
 				enTete.setText("Aucun résultat restant");
-				courant = new Ordinateur (0, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
+				try {
+					courant = new Ordinateur (1, 2, "Mecanique", "Portable", "MSI", "ATX_standard", "Aucun ordinateur restant dans la liste", -1);
+				} catch (ExceptionPrix e) {
+					e.printStackTrace();
+				} catch (ExceptionNom e) {
+					e.printStackTrace();
+				}
 				maj_ihm();
 			}
 		}
